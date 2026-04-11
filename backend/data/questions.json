@@ -1,0 +1,1976 @@
+[
+    {
+        "question": "What is the time complexity of accessing an array element?",
+        "options": [
+            "O(1)",
+            "O(n)",
+            "O(log n)",
+            "O(n log n)"
+        ],
+        "correctAnswer": "O(1)",
+        "subject": "Data Structures",
+        "topic": "Arrays",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Array elements are accessed using indices.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure follows LIFO?",
+        "options": [
+            "Queue",
+            "Stack",
+            "Tree",
+            "Graph"
+        ],
+        "correctAnswer": "Stack",
+        "subject": "Data Structures",
+        "topic": "Stacks",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Stack follows Last-In-First-Out.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure follows FIFO?",
+        "options": [
+            "Stack",
+            "Queue",
+            "Heap",
+            "Tree"
+        ],
+        "correctAnswer": "Queue",
+        "subject": "Data Structures",
+        "topic": "Queues",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Queue follows First-In-First-Out.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which traversal of a BST gives sorted output?",
+        "options": [
+            "Preorder",
+            "Inorder",
+            "Postorder",
+            "Level Order"
+        ],
+        "correctAnswer": "Inorder",
+        "subject": "Data Structures",
+        "topic": "Trees",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Inorder traversal of BST produces sorted output.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure is used in BFS?",
+        "options": [
+            "Stack",
+            "Queue",
+            "Array",
+            "Heap"
+        ],
+        "correctAnswer": "Queue",
+        "subject": "Data Structures",
+        "topic": "Graphs",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "BFS uses a queue.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is the time complexity of binary search?",
+        "options": [
+            "O(n)",
+            "O(log n)",
+            "O(n log n)",
+            "O(1)"
+        ],
+        "correctAnswer": "O(log n)",
+        "subject": "Algorithms",
+        "topic": "Searching",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Binary search divides the array in half.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which sorting algorithm has O(n²) complexity?",
+        "options": [
+            "Merge Sort",
+            "Quick Sort",
+            "Bubble Sort",
+            "Heap Sort"
+        ],
+        "correctAnswer": "Bubble Sort",
+        "subject": "Algorithms",
+        "topic": "Sorting",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Bubble sort has quadratic complexity.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which algorithm finds the shortest path in a graph?",
+        "options": [
+            "DFS",
+            "BFS",
+            "Dijkstra's Algorithm",
+            "Prim's Algorithm"
+        ],
+        "correctAnswer": "Dijkstra's Algorithm",
+        "subject": "Algorithms",
+        "topic": "Graph Algorithms",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Dijkstra’s algorithm finds shortest paths.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which SQL command is used to retrieve data?",
+        "options": [
+            "INSERT",
+            "UPDATE",
+            "SELECT",
+            "DELETE"
+        ],
+        "correctAnswer": "SELECT",
+        "subject": "Database Management Systems",
+        "topic": "SQL",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "SELECT retrieves data from a database.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which normal form removes partial dependency?",
+        "options": [
+            "1NF",
+            "2NF",
+            "3NF",
+            "BCNF"
+        ],
+        "correctAnswer": "2NF",
+        "subject": "Database Management Systems",
+        "topic": "Normalization",
+        "difficulty": "Medium",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "2NF removes partial dependency.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which ACID property ensures all-or-nothing execution?",
+        "options": [
+            "Consistency",
+            "Atomicity",
+            "Isolation",
+            "Durability"
+        ],
+        "correctAnswer": "Atomicity",
+        "subject": "Database Management Systems",
+        "topic": "Transactions",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Atomicity ensures complete execution.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which scheduling algorithm gives minimum waiting time?",
+        "options": [
+            "FCFS",
+            "SJF",
+            "Round Robin",
+            "Priority"
+        ],
+        "correctAnswer": "SJF",
+        "subject": "Operating Systems",
+        "topic": "CPU Scheduling",
+        "difficulty": "Medium",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "SJF minimizes waiting time.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which technique prevents deadlock?",
+        "options": [
+            "Banker's Algorithm",
+            "Paging",
+            "Segmentation",
+            "Thrashing"
+        ],
+        "correctAnswer": "Banker's Algorithm",
+        "subject": "Operating Systems",
+        "topic": "Deadlocks",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Banker's Algorithm prevents deadlock.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which memory is volatile?",
+        "options": [
+            "ROM",
+            "RAM",
+            "Hard Disk",
+            "SSD"
+        ],
+        "correctAnswer": "RAM",
+        "subject": "Operating Systems",
+        "topic": "Memory Management",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "RAM is volatile memory.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which layer of the OSI model handles routing?",
+        "options": [
+            "Transport",
+            "Network",
+            "Session",
+            "Data Link"
+        ],
+        "correctAnswer": "Network",
+        "subject": "Computer Networks",
+        "topic": "OSI Model",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Routing is handled by the network layer.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What does TCP stand for?",
+        "options": [
+            "Transmission Control Protocol",
+            "Transfer Communication Protocol",
+            "Transport Control Process",
+            "Transmission Communication Process"
+        ],
+        "correctAnswer": "Transmission Control Protocol",
+        "subject": "Computer Networks",
+        "topic": "Protocols",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "TCP ensures reliable communication.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What does OOP stand for?",
+        "options": [
+            "Object-Oriented Programming",
+            "Objective-Oriented Programming",
+            "Object Operational Programming",
+            "Operating Object Program"
+        ],
+        "correctAnswer": "Object-Oriented Programming",
+        "subject": "Object-Oriented Programming",
+        "topic": "Basics",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "OOP stands for Object-Oriented Programming.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which OOP concept enables code reuse?",
+        "options": [
+            "Encapsulation",
+            "Inheritance",
+            "Polymorphism",
+            "Abstraction"
+        ],
+        "correctAnswer": "Inheritance",
+        "subject": "Object-Oriented Programming",
+        "topic": "Inheritance",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Inheritance enables reuse.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is 20% of 150?",
+        "options": [
+            "20",
+            "25",
+            "30",
+            "35"
+        ],
+        "correctAnswer": "30",
+        "subject": "Aptitude",
+        "topic": "Percentages",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "20% of 150 is 30.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which component distributes traffic across servers?",
+        "options": [
+            "Router",
+            "Switch",
+            "Load Balancer",
+            "Firewall"
+        ],
+        "correctAnswer": "Load Balancer",
+        "subject": "System Design",
+        "topic": "Load Balancing",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Load balancers distribute network traffic.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which technique improves system performance?",
+        "options": [
+            "Caching",
+            "Compilation",
+            "Encapsulation",
+            "Normalization"
+        ],
+        "correctAnswer": "Caching",
+        "subject": "System Design",
+        "topic": "Scalability",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Caching improves performance and scalability.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which database is NoSQL?",
+        "options": [
+            "MySQL",
+            "Oracle",
+            "MongoDB",
+            "PostgreSQL"
+        ],
+        "correctAnswer": "MongoDB",
+        "subject": "Database Management Systems",
+        "topic": "NoSQL",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "MongoDB is a NoSQL database.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which sorting algorithm is stable?",
+        "options": [
+            "Quick Sort",
+            "Merge Sort",
+            "Heap Sort",
+            "Selection Sort"
+        ],
+        "correctAnswer": "Merge Sort",
+        "subject": "Algorithms",
+        "topic": "Sorting",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Merge sort is stable.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which pillar of OOP hides implementation details?",
+        "options": [
+            "Encapsulation",
+            "Inheritance",
+            "Polymorphism",
+            "Overloading"
+        ],
+        "correctAnswer": "Encapsulation",
+        "subject": "Object-Oriented Programming",
+        "topic": "Encapsulation",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Encapsulation hides internal details.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is the next number in the series: 2, 4, 8, 16, ?",
+        "options": [
+            "24",
+            "32",
+            "64",
+            "128"
+        ],
+        "correctAnswer": "32",
+        "subject": "Aptitude",
+        "topic": "Number Series",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 2,
+        "explanation": "Each number is multiplied by 2.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is the time complexity of linear search?",
+        "options": [
+            "O(1)",
+            "O(log n)",
+            "O(n)",
+            "O(n log n)"
+        ],
+        "correctAnswer": "O(n)",
+        "subject": "Algorithms",
+        "topic": "Searching",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Linear search checks each element sequentially.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure is used to implement recursion?",
+        "options": [
+            "Queue",
+            "Stack",
+            "Heap",
+            "Graph"
+        ],
+        "correctAnswer": "Stack",
+        "subject": "Data Structures",
+        "topic": "Recursion",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Recursion uses the call stack.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which sorting algorithm uses divide and conquer?",
+        "options": [
+            "Bubble Sort",
+            "Merge Sort",
+            "Insertion Sort",
+            "Selection Sort"
+        ],
+        "correctAnswer": "Merge Sort",
+        "subject": "Algorithms",
+        "topic": "Sorting",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Merge sort divides the array into halves.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is the primary key in a database?",
+        "options": [
+            "A duplicate identifier",
+            "A unique identifier",
+            "A foreign key",
+            "A null field"
+        ],
+        "correctAnswer": "A unique identifier",
+        "subject": "Database Management Systems",
+        "topic": "Keys",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "A primary key uniquely identifies each record.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which command is used to remove a table in SQL?",
+        "options": [
+            "DELETE",
+            "REMOVE",
+            "DROP",
+            "CLEAR"
+        ],
+        "correctAnswer": "DROP",
+        "subject": "Database Management Systems",
+        "topic": "SQL",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "DROP deletes the entire table.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is a deadlock?",
+        "options": [
+            "A process running infinitely",
+            "Processes waiting indefinitely for resources",
+            "Memory leak",
+            "CPU overload"
+        ],
+        "correctAnswer": "Processes waiting indefinitely for resources",
+        "subject": "Operating Systems",
+        "topic": "Deadlocks",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Deadlock occurs when processes wait indefinitely.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which OS technique allows multiple programs to run simultaneously?",
+        "options": [
+            "Multitasking",
+            "Paging",
+            "Thrashing",
+            "Spooling"
+        ],
+        "correctAnswer": "Multitasking",
+        "subject": "Operating Systems",
+        "topic": "Process Management",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google"
+        ],
+        "marks": 1,
+        "explanation": "Multitasking allows concurrent execution.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which protocol is used for sending emails?",
+        "options": [
+            "HTTP",
+            "SMTP",
+            "FTP",
+            "SNMP"
+        ],
+        "correctAnswer": "SMTP",
+        "subject": "Computer Networks",
+        "topic": "Protocols",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 1,
+        "explanation": "SMTP is used for sending emails.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which device connects different networks?",
+        "options": [
+            "Switch",
+            "Router",
+            "Hub",
+            "Bridge"
+        ],
+        "correctAnswer": "Router",
+        "subject": "Computer Networks",
+        "topic": "Networking Devices",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Routers connect multiple networks.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which OOP concept allows the same method to behave differently?",
+        "options": [
+            "Encapsulation",
+            "Polymorphism",
+            "Inheritance",
+            "Abstraction"
+        ],
+        "correctAnswer": "Polymorphism",
+        "subject": "Object-Oriented Programming",
+        "topic": "Polymorphism",
+        "difficulty": "Medium",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Polymorphism enables multiple behaviors.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which OOP principle hides data from unauthorized access?",
+        "options": [
+            "Inheritance",
+            "Encapsulation",
+            "Polymorphism",
+            "Abstraction"
+        ],
+        "correctAnswer": "Encapsulation",
+        "subject": "Object-Oriented Programming",
+        "topic": "Encapsulation",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 1,
+        "explanation": "Encapsulation hides data.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "If CP = 100 and SP = 120, what is the profit percentage?",
+        "options": [
+            "10%",
+            "15%",
+            "20%",
+            "25%"
+        ],
+        "correctAnswer": "20%",
+        "subject": "Aptitude",
+        "topic": "Profit and Loss",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Profit = 20%.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "A train travels 60 km in 1 hour. What is its speed?",
+        "options": [
+            "50 km/h",
+            "60 km/h",
+            "70 km/h",
+            "80 km/h"
+        ],
+        "correctAnswer": "60 km/h",
+        "subject": "Aptitude",
+        "topic": "Speed and Distance",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Speed = Distance/Time.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which architecture improves scalability in distributed systems?",
+        "options": [
+            "Monolithic",
+            "Microservices",
+            "Layered",
+            "Standalone"
+        ],
+        "correctAnswer": "Microservices",
+        "subject": "System Design",
+        "topic": "Architecture",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Microservices enable scalability.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is a CDN used for?",
+        "options": [
+            "Database storage",
+            "Caching content geographically",
+            "Routing traffic",
+            "Encryption"
+        ],
+        "correctAnswer": "Caching content geographically",
+        "subject": "System Design",
+        "topic": "Content Delivery Network",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "CDNs reduce latency.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which algorithm is used in Kruskal’s Minimum Spanning Tree?",
+        "options": [
+            "Greedy",
+            "Dynamic Programming",
+            "Backtracking",
+            "Divide and Conquer"
+        ],
+        "correctAnswer": "Greedy",
+        "subject": "Algorithms",
+        "topic": "Graph Algorithms",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Kruskal’s algorithm follows a greedy approach.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which isolation level prevents dirty reads?",
+        "options": [
+            "Read Uncommitted",
+            "Read Committed",
+            "Repeatable Read",
+            "Serializable"
+        ],
+        "correctAnswer": "Read Committed",
+        "subject": "Database Management Systems",
+        "topic": "Transactions",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Read Committed prevents dirty reads.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is thrashing in operating systems?",
+        "options": [
+            "High CPU usage",
+            "Frequent page swapping",
+            "Deadlock occurrence",
+            "Process starvation"
+        ],
+        "correctAnswer": "Frequent page swapping",
+        "subject": "Operating Systems",
+        "topic": "Memory Management",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Thrashing occurs due to excessive paging.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which protocol resolves domain names to IP addresses?",
+        "options": [
+            "HTTP",
+            "DNS",
+            "FTP",
+            "SMTP"
+        ],
+        "correctAnswer": "DNS",
+        "subject": "Computer Networks",
+        "topic": "DNS",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 2,
+        "explanation": "DNS resolves domain names.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is horizontal scaling?",
+        "options": [
+            "Adding more RAM",
+            "Adding more servers",
+            "Increasing CPU speed",
+            "Upgrading storage"
+        ],
+        "correctAnswer": "Adding more servers",
+        "subject": "System Design",
+        "topic": "Scalability",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Horizontal scaling adds more machines.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure is used in priority scheduling?",
+        "options": [
+            "Queue",
+            "Stack",
+            "Priority Queue",
+            "Array"
+        ],
+        "correctAnswer": "Priority Queue",
+        "subject": "Data Structures",
+        "topic": "Heaps",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Priority queues use heaps.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure is used to implement a priority queue?",
+        "options": [
+            "Array",
+            "Linked List",
+            "Heap",
+            "Stack"
+        ],
+        "correctAnswer": "Heap",
+        "subject": "Data Structures",
+        "topic": "Heaps",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Priority queues are efficiently implemented using heaps.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure uses hashing for fast retrieval?",
+        "options": [
+            "Array",
+            "Hash Table",
+            "Stack",
+            "Queue"
+        ],
+        "correctAnswer": "Hash Table",
+        "subject": "Data Structures",
+        "topic": "Hashing",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Hash tables provide average O(1) lookup time.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is the worst-case time complexity of Merge Sort?",
+        "options": [
+            "O(n)",
+            "O(n log n)",
+            "O(n²)",
+            "O(log n)"
+        ],
+        "correctAnswer": "O(n log n)",
+        "subject": "Algorithms",
+        "topic": "Sorting",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Merge Sort consistently performs at O(n log n).",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which algorithm uses dynamic programming to find shortest paths?",
+        "options": [
+            "Dijkstra's Algorithm",
+            "Floyd-Warshall Algorithm",
+            "Prim's Algorithm",
+            "Kruskal's Algorithm"
+        ],
+        "correctAnswer": "Floyd-Warshall Algorithm",
+        "subject": "Algorithms",
+        "topic": "Dynamic Programming",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Floyd-Warshall computes shortest paths between all pairs of vertices.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which normal form removes transitive dependency?",
+        "options": [
+            "1NF",
+            "2NF",
+            "3NF",
+            "BCNF"
+        ],
+        "correctAnswer": "3NF",
+        "subject": "Database Management Systems",
+        "topic": "Normalization",
+        "difficulty": "Medium",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Third Normal Form removes transitive dependencies.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which SQL clause is used to filter records?",
+        "options": [
+            "ORDER BY",
+            "GROUP BY",
+            "WHERE",
+            "HAVING"
+        ],
+        "correctAnswer": "WHERE",
+        "subject": "Database Management Systems",
+        "topic": "SQL",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "The WHERE clause filters records based on conditions.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which OS scheduling algorithm allocates CPU in fixed time slices?",
+        "options": [
+            "FCFS",
+            "SJF",
+            "Round Robin",
+            "Priority Scheduling"
+        ],
+        "correctAnswer": "Round Robin",
+        "subject": "Operating Systems",
+        "topic": "CPU Scheduling",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Round Robin scheduling uses time quantum.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is a page fault?",
+        "options": [
+            "Error in CPU scheduling",
+            "Accessing a page not in memory",
+            "Deadlock condition",
+            "Memory leak"
+        ],
+        "correctAnswer": "Accessing a page not in memory",
+        "subject": "Operating Systems",
+        "topic": "Virtual Memory",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "A page fault occurs when a process accesses a page not present in RAM.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which protocol is used for secure web communication?",
+        "options": [
+            "HTTP",
+            "HTTPS",
+            "FTP",
+            "SMTP"
+        ],
+        "correctAnswer": "HTTPS",
+        "subject": "Computer Networks",
+        "topic": "Protocols",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "HTTPS ensures encrypted communication using SSL/TLS.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which topology connects all devices to a central hub?",
+        "options": [
+            "Bus",
+            "Star",
+            "Ring",
+            "Mesh"
+        ],
+        "correctAnswer": "Star",
+        "subject": "Computer Networks",
+        "topic": "Network Topologies",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 1,
+        "explanation": "Star topology connects devices to a central hub.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which OOP concept allows multiple methods with the same name?",
+        "options": [
+            "Encapsulation",
+            "Polymorphism",
+            "Inheritance",
+            "Abstraction"
+        ],
+        "correctAnswer": "Polymorphism",
+        "subject": "Object-Oriented Programming",
+        "topic": "Polymorphism",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Polymorphism enables method overloading and overriding.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is abstraction in OOP?",
+        "options": [
+            "Hiding implementation details",
+            "Showing all data",
+            "Duplicating code",
+            "Deleting objects"
+        ],
+        "correctAnswer": "Hiding implementation details",
+        "subject": "Object-Oriented Programming",
+        "topic": "Abstraction",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Abstraction hides complexity and shows only essential features.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "If a product costs ₹500 and is sold for ₹600, what is the profit percentage?",
+        "options": [
+            "10%",
+            "15%",
+            "20%",
+            "25%"
+        ],
+        "correctAnswer": "20%",
+        "subject": "Aptitude",
+        "topic": "Profit and Loss",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Profit = 100; Profit% = (100/500) × 100 = 20%.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "If 5 workers complete a job in 10 days, how many days will 10 workers take?",
+        "options": [
+            "2",
+            "5",
+            "10",
+            "20"
+        ],
+        "correctAnswer": "5",
+        "subject": "Aptitude",
+        "topic": "Time and Work",
+        "difficulty": "Medium",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Doubling workers halves the time.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which type of database is best for hierarchical data?",
+        "options": [
+            "Relational",
+            "NoSQL",
+            "Graph Database",
+            "Flat File"
+        ],
+        "correctAnswer": "Graph Database",
+        "subject": "System Design",
+        "topic": "Databases",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Graph databases efficiently handle relationships.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What does CAP theorem state?",
+        "options": [
+            "Consistency, Availability, Partition Tolerance",
+            "Caching, Availability, Performance",
+            "Consistency, Accuracy, Performance",
+            "Control, Access, Protection"
+        ],
+        "correctAnswer": "Consistency, Availability, Partition Tolerance",
+        "subject": "System Design",
+        "topic": "Distributed Systems",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "CAP theorem states that only two of the three guarantees can be achieved simultaneously.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure is used in LRU cache implementation?",
+        "options": [
+            "Stack",
+            "Queue",
+            "Hash Map and Doubly Linked List",
+            "Array"
+        ],
+        "correctAnswer": "Hash Map and Doubly Linked List",
+        "subject": "System Design",
+        "topic": "Caching",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "LRU cache uses a hash map and doubly linked list.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which indexing technique uses a tree structure?",
+        "options": [
+            "Hash Index",
+            "B-Tree Index",
+            "Bitmap Index",
+            "Cluster Index"
+        ],
+        "correctAnswer": "B-Tree Index",
+        "subject": "Database Management Systems",
+        "topic": "Indexing",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "B-Tree indexing enables efficient searching.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which protocol is used for file transfer?",
+        "options": [
+            "HTTP",
+            "FTP",
+            "SMTP",
+            "SNMP"
+        ],
+        "correctAnswer": "FTP",
+        "subject": "Computer Networks",
+        "topic": "Protocols",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google"
+        ],
+        "marks": 2,
+        "explanation": "FTP is used to transfer files over networks.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is the default port number of HTTP?",
+        "options": [
+            "21",
+            "25",
+            "80",
+            "443"
+        ],
+        "correctAnswer": "80",
+        "subject": "Computer Networks",
+        "topic": "Ports",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 2,
+        "explanation": "HTTP uses port 80 by default.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which algorithm detects cycles in a graph?",
+        "options": [
+            "BFS",
+            "DFS",
+            "Dijkstra",
+            "Prim"
+        ],
+        "correctAnswer": "DFS",
+        "subject": "Algorithms",
+        "topic": "Graph Algorithms",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "DFS is used to detect cycles in graphs.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is the time complexity of inserting into a heap?",
+        "options": [
+            "O(1)",
+            "O(log n)",
+            "O(n)",
+            "O(n log n)"
+        ],
+        "correctAnswer": "O(log n)",
+        "subject": "Data Structures",
+        "topic": "Heaps",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Insertion into a heap requires heapification.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is the time complexity of Heap Sort?",
+        "options": [
+            "O(n)",
+            "O(n log n)",
+            "O(log n)",
+            "O(n²)"
+        ],
+        "correctAnswer": "O(n log n)",
+        "subject": "Algorithms",
+        "topic": "Sorting",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Heap Sort builds a heap and extracts elements in O(n log n).",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which data structure is best suited for implementing undo operations?",
+        "options": [
+            "Queue",
+            "Stack",
+            "Heap",
+            "Tree"
+        ],
+        "correctAnswer": "Stack",
+        "subject": "Data Structures",
+        "topic": "Stacks",
+        "difficulty": "Easy",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Undo operations follow the Last-In-First-Out principle.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which algorithm is used to find the Minimum Spanning Tree using edge sorting?",
+        "options": [
+            "Prim's Algorithm",
+            "Kruskal's Algorithm",
+            "Dijkstra's Algorithm",
+            "Bellman-Ford Algorithm"
+        ],
+        "correctAnswer": "Kruskal's Algorithm",
+        "subject": "Algorithms",
+        "topic": "Graph Algorithms",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Kruskal's algorithm uses a greedy approach with edge sorting.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which indexing technique uses hashing?",
+        "options": [
+            "B-Tree Index",
+            "Bitmap Index",
+            "Hash Index",
+            "Clustered Index"
+        ],
+        "correctAnswer": "Hash Index",
+        "subject": "Database Management Systems",
+        "topic": "Indexing",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Hash indexing allows fast equality searches.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which SQL function returns the number of rows?",
+        "options": [
+            "SUM()",
+            "COUNT()",
+            "AVG()",
+            "TOTAL()"
+        ],
+        "correctAnswer": "COUNT()",
+        "subject": "Database Management Systems",
+        "topic": "SQL Functions",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "COUNT() returns the total number of rows.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which OS concept allows a process to be temporarily swapped out of memory?",
+        "options": [
+            "Paging",
+            "Swapping",
+            "Segmentation",
+            "Thrashing"
+        ],
+        "correctAnswer": "Swapping",
+        "subject": "Operating Systems",
+        "topic": "Memory Management",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Swapping moves processes between memory and disk.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which scheduling algorithm may cause starvation?",
+        "options": [
+            "Round Robin",
+            "Priority Scheduling",
+            "FCFS",
+            "Multilevel Queue"
+        ],
+        "correctAnswer": "Priority Scheduling",
+        "subject": "Operating Systems",
+        "topic": "CPU Scheduling",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Low-priority processes may starve in priority scheduling.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which protocol is used to automatically assign IP addresses?",
+        "options": [
+            "DNS",
+            "DHCP",
+            "ARP",
+            "ICMP"
+        ],
+        "correctAnswer": "DHCP",
+        "subject": "Computer Networks",
+        "topic": "Network Protocols",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "DHCP dynamically assigns IP addresses.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which device operates at the Data Link layer of the OSI model?",
+        "options": [
+            "Router",
+            "Switch",
+            "Gateway",
+            "Repeater"
+        ],
+        "correctAnswer": "Switch",
+        "subject": "Computer Networks",
+        "topic": "OSI Model",
+        "difficulty": "Medium",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 2,
+        "explanation": "Switches operate at the Data Link layer.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which OOP concept allows a subclass to provide a specific implementation of a method?",
+        "options": [
+            "Overloading",
+            "Overriding",
+            "Encapsulation",
+            "Abstraction"
+        ],
+        "correctAnswer": "Overriding",
+        "subject": "Object-Oriented Programming",
+        "topic": "Method Overriding",
+        "difficulty": "Medium",
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Method overriding enables runtime polymorphism.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which keyword is used to inherit a class in Java?",
+        "options": [
+            "this",
+            "super",
+            "extends",
+            "implements"
+        ],
+        "correctAnswer": "extends",
+        "subject": "Object-Oriented Programming",
+        "topic": "Inheritance",
+        "difficulty": "Easy",
+        "companies": [
+            "Infosys",
+            "TCS",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 2,
+        "explanation": "The 'extends' keyword is used for inheritance in Java.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "If the average of five numbers is 20, what is their total?",
+        "options": [
+            "50",
+            "100",
+            "80",
+            "120"
+        ],
+        "correctAnswer": "100",
+        "subject": "Aptitude",
+        "topic": "Averages",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 2,
+        "explanation": "Total = Average × Number of values = 20 × 5 = 100.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "A man covers 120 km in 2 hours. What is his speed?",
+        "options": [
+            "40 km/h",
+            "50 km/h",
+            "60 km/h",
+            "70 km/h"
+        ],
+        "correctAnswer": "60 km/h",
+        "subject": "Aptitude",
+        "topic": "Speed and Distance",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 2,
+        "explanation": "Speed = Distance ÷ Time.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which design pattern ensures a class has only one instance?",
+        "options": [
+            "Factory Pattern",
+            "Singleton Pattern",
+            "Observer Pattern",
+            "Adapter Pattern"
+        ],
+        "correctAnswer": "Singleton Pattern",
+        "subject": "System Design",
+        "topic": "Design Patterns",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Singleton ensures only one instance exists.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which system uses eventual consistency instead of strong consistency?",
+        "options": [
+            "Distributed Systems",
+            "Standalone Systems",
+            "Centralized Databases",
+            "Monolithic Systems"
+        ],
+        "correctAnswer": "Distributed Systems",
+        "subject": "System Design",
+        "topic": "Consistency Models",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Distributed systems often follow eventual consistency.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which type of load balancing distributes traffic based on server capacity?",
+        "options": [
+            "Round Robin",
+            "Weighted Round Robin",
+            "Random",
+            "Static"
+        ],
+        "correctAnswer": "Weighted Round Robin",
+        "subject": "System Design",
+        "topic": "Load Balancing",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Weighted Round Robin assigns traffic based on server weight.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which database scaling technique splits data across multiple servers?",
+        "options": [
+            "Replication",
+            "Sharding",
+            "Indexing",
+            "Caching"
+        ],
+        "correctAnswer": "Sharding",
+        "subject": "System Design",
+        "topic": "Database Scaling",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Sharding distributes data horizontally across servers.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which algorithm is used to detect negative cycles in a graph?",
+        "options": [
+            "Dijkstra's Algorithm",
+            "Bellman-Ford Algorithm",
+            "Prim's Algorithm",
+            "Kruskal's Algorithm"
+        ],
+        "correctAnswer": "Bellman-Ford Algorithm",
+        "subject": "Algorithms",
+        "topic": "Graph Algorithms",
+        "difficulty": "Hard",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 2,
+        "explanation": "Bellman-Ford detects negative weight cycles.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which type of join returns all records when there is a match in either table?",
+        "options": [
+            "INNER JOIN",
+            "LEFT JOIN",
+            "RIGHT JOIN",
+            "FULL OUTER JOIN"
+        ],
+        "correctAnswer": "FULL OUTER JOIN",
+        "subject": "Database Management Systems",
+        "topic": "SQL Joins",
+        "difficulty": "Medium",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 2,
+        "explanation": "FULL OUTER JOIN returns all matching and non-matching rows.",
+        "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "Which cloud computing model provides virtualized computing resources over the internet?",
+        "options": [
+            "PaaS",
+            "SaaS",
+            "IaaS",
+            "FaaS"
+        ],
+        "correctAnswer": "IaaS",
+        "subject": "System Design",
+        "topic": "Cloud Computing",
+        "difficulty": "Medium",
+        "companies": [
+            "Amazon",
+            "Google",
+            "Microsoft"
+        ],
+        "marks": 2,
+        "explanation": "IaaS provides virtual machines and infrastructure.",
+        "testType": "mock",
+        "isActive": true
+    }
+]

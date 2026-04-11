@@ -1,0 +1,116 @@
+[
+    {
+        "name": "TCS",
+        "description": "Tata Consultancy Services (TCS) is a leading global IT services, consulting, and business solutions organization.",
+        "subjects": [
+            "Aptitude",
+            "Programming Fundamentals",
+            "Data Structures",
+            "Database Management Systems",
+            "Operating Systems",
+            "Computer Networks"
+        ],
+        "difficultyLevel": "Easy",
+        "averagePackage": 3.5,
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/2/29/Tata_Consultancy_Services_Logo.svg",
+        "website": "https://www.tcs.com",
+        "hiringProcess": [
+            "Online Aptitude Test",
+            "Technical Interview",
+            "HR Interview"
+        ],
+        "isActive": true
+    },
+    {
+        "name": "Infosys",
+        "description": "Infosys is a global leader in next-generation digital services and consulting.",
+        "subjects": [
+            "Aptitude",
+            "Programming Fundamentals",
+            "Data Structures",
+            "Database Management Systems",
+            "Operating Systems"
+        ],
+        "difficultyLevel": "Easy",
+        "averagePackage": 3.6,
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg",
+        "website": "https://www.infosys.com",
+        "hiringProcess": [
+            "Online Aptitude Test",
+            "Technical Interview",
+            "HR Interview"
+        ],
+        "isActive": true
+    },
+    {
+        "name": "Google",
+        "description": "Google is a global technology leader specializing in internet-related services and products.",
+        "subjects": [
+            "Programming Fundamentals",
+            "Data Structures",
+            "Algorithms",
+            "Operating Systems",
+            "Database Management Systems",
+            "System Design"
+        ],
+        "difficultyLevel": "Hard",
+        "averagePackage": 30,
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+        "website": "https://careers.google.com",
+        "hiringProcess": [
+            "Online Coding Round",
+            "Technical Interviews",
+            "System Design Interview",
+            "HR Interview"
+        ],
+        "isActive": true
+    },
+    {
+        "name": "Microsoft",
+        "description": "Microsoft is a multinational technology corporation known for software, cloud computing, and enterprise solutions.",
+        "subjects": [
+            "Programming Fundamentals",
+            "Data Structures",
+            "Algorithms",
+            "Operating Systems",
+            "Database Management Systems",
+            "System Design",
+            "Object-Oriented Programming"
+        ],
+        "difficultyLevel": "Hard",
+        "averagePackage": 28,
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+        "website": "https://careers.microsoft.com",
+        "hiringProcess": [
+            "Online Coding Test",
+            "Technical Interviews",
+            "System Design Interview",
+            "HR Interview"
+        ],
+        "isActive": true
+    },
+    {
+        "name": "Amazon",
+        "description": "Amazon is a multinational technology company focusing on e-commerce, cloud computing, and artificial intelligence.",
+        "subjects": [
+            "Programming Fundamentals",
+            "Data Structures",
+            "Algorithms",
+            "Operating Systems",
+            "Database Management Systems",
+            "Computer Networks",
+            "System Design"
+        ],
+        "difficultyLevel": "Hard",
+        "averagePackage": 32,
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+        "website": "https://www.amazon.jobs",
+        "hiringProcess": [
+            "Online Assessment",
+            "Technical Interviews",
+            "Bar Raiser Round",
+            "HR Interview"
+        ],
+        "isActive": true
+    }
+]

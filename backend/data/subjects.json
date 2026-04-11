@@ -1,0 +1,199 @@
+[
+    {
+        "name": "Programming Fundamentals",
+        "code": "PF",
+        "description": "Introduction to programming concepts including variables, data types, control structures, and functions.",
+        "prerequisites": [],
+        "topics": [
+            "Variables and Data Types",
+            "Operators",
+            "Control Structures",
+            "Functions",
+            "Arrays",
+            "Strings",
+            "Pointers",
+            "Recursion"
+        ],
+        "difficultyLevel": "Beginner",
+        "estimatedHours": 20,
+        "category": "Programming",
+        "isActive": true
+    },
+    {
+        "name": "Object-Oriented Programming",
+        "code": "OOP",
+        "description": "Concepts of object-oriented programming such as classes, objects, inheritance, polymorphism, encapsulation, and abstraction.",
+        "prerequisites": [
+            "Programming Fundamentals"
+        ],
+        "topics": [
+            "Classes and Objects",
+            "Encapsulation",
+            "Inheritance",
+            "Polymorphism",
+            "Abstraction",
+            "Constructors and Destructors",
+            "Method Overloading and Overriding",
+            "Interfaces and Abstract Classes"
+        ],
+        "difficultyLevel": "Beginner",
+        "estimatedHours": 18,
+        "category": "Object-Oriented Programming",
+        "isActive": true
+    },
+    {
+        "name": "Data Structures",
+        "code": "DSA",
+        "description": "Study of linear and non-linear data structures used to organize and store data efficiently.",
+        "prerequisites": [
+            "Programming Fundamentals"
+        ],
+        "topics": [
+            "Arrays",
+            "Linked Lists",
+            "Stacks",
+            "Queues",
+            "Hash Tables",
+            "Trees",
+            "Heaps",
+            "Graphs"
+        ],
+        "difficultyLevel": "Intermediate",
+        "estimatedHours": 35,
+        "category": "Data Structures",
+        "isActive": true
+    },
+    {
+        "name": "Algorithms",
+        "code": "ALGO",
+        "description": "Design and analysis of algorithms for solving computational problems efficiently.",
+        "prerequisites": [
+            "Data Structures"
+        ],
+        "topics": [
+            "Time and Space Complexity",
+            "Asymptotic Analysis",
+            "Sorting Algorithms",
+            "Searching Algorithms",
+            "Greedy Algorithms",
+            "Dynamic Programming",
+            "Backtracking",
+            "Divide and Conquer",
+            "Graph Algorithms"
+        ],
+        "difficultyLevel": "Intermediate",
+        "estimatedHours": 40,
+        "category": "Algorithms",
+        "isActive": true
+    },
+    {
+        "name": "Database Management Systems",
+        "code": "DBMS",
+        "description": "Concepts of databases, relational models, and query languages.",
+        "prerequisites": [],
+        "topics": [
+            "Introduction to Databases",
+            "Entity-Relationship Model",
+            "Relational Model",
+            "SQL",
+            "Normalization",
+            "Transactions and Concurrency Control",
+            "Indexing",
+            "NoSQL Databases"
+        ],
+        "difficultyLevel": "Intermediate",
+        "estimatedHours": 25,
+        "category": "Database",
+        "isActive": true
+    },
+    {
+        "name": "Operating Systems",
+        "code": "OS",
+        "description": "Study of operating system principles and resource management.",
+        "prerequisites": [
+            "Programming Fundamentals"
+        ],
+        "topics": [
+            "Introduction to Operating Systems",
+            "Processes and Threads",
+            "CPU Scheduling",
+            "Process Synchronization",
+            "Deadlocks",
+            "Memory Management",
+            "Virtual Memory",
+            "File Systems",
+            "Disk Scheduling"
+        ],
+        "difficultyLevel": "Intermediate",
+        "estimatedHours": 30,
+        "category": "Operating Systems",
+        "isActive": true
+    },
+    {
+        "name": "Computer Networks",
+        "code": "CN",
+        "description": "Fundamentals of data communication and networking concepts.",
+        "prerequisites": [],
+        "topics": [
+            "Introduction to Computer Networks",
+            "OSI Model",
+            "TCP/IP Model",
+            "Physical and Data Link Layers",
+            "Network Layer",
+            "Transport Layer",
+            "Application Layer",
+            "Routing Protocols",
+            "Network Security"
+        ],
+        "difficultyLevel": "Intermediate",
+        "estimatedHours": 25,
+        "category": "Computer Networks",
+        "isActive": true
+    },
+    {
+        "name": "System Design",
+        "code": "SD",
+        "description": "Concepts of designing scalable, reliable, and efficient software systems.",
+        "prerequisites": [
+            "Data Structures",
+            "Database Management Systems",
+            "Computer Networks"
+        ],
+        "topics": [
+            "System Design Fundamentals",
+            "Scalability",
+            "Load Balancing",
+            "Caching",
+            "Database Sharding",
+            "Microservices Architecture",
+            "API Design",
+            "Message Queues",
+            "Distributed Systems"
+        ],
+        "difficultyLevel": "Advanced",
+        "estimatedHours": 40,
+        "category": "System Design",
+        "isActive": true
+    },
+    {
+        "name": "Aptitude",
+        "code": "APT",
+        "description": "Quantitative, logical, and verbal reasoning skills required for placement tests.",
+        "prerequisites": [],
+        "topics": [
+            "Quantitative Aptitude",
+            "Logical Reasoning",
+            "Verbal Ability",
+            "Probability",
+            "Permutations and Combinations",
+            "Time and Work",
+            "Time, Speed and Distance",
+            "Number Systems",
+            "Data Interpretation"
+        ],
+        "difficultyLevel": "Beginner",
+        "estimatedHours": 20,
+        "category": "Aptitude",
+        "isActive": true
+    }
+]

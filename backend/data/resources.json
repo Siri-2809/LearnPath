@@ -1,0 +1,322 @@
+[
+    {
+        "title": "C Programming Tutorial",
+        "description": "Comprehensive guide to C programming for beginners.",
+        "url": "https://www.geeksforgeeks.org/c-programming-language/",
+        "subject": "Programming Fundamentals",
+        "topic": "Variables and Data Types",
+        "type": "Article",
+        "difficultyLevel": "Beginner",
+        "platform": "GeeksforGeeks",
+        "duration": "10 hours",
+        "rating": 4.7,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "C",
+            "Programming",
+            "Basics"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Introduction to Java Programming",
+        "description": "Learn Java fundamentals including OOP concepts.",
+        "url": "https://www.geeksforgeeks.org/java/",
+        "subject": "Programming Fundamentals",
+        "topic": "Functions",
+        "type": "Article",
+        "difficultyLevel": "Beginner",
+        "platform": "GeeksforGeeks",
+        "duration": "12 hours",
+        "rating": 4.8,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "Java",
+            "Programming"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Object-Oriented Programming in Java",
+        "description": "Understand OOP concepts such as inheritance, polymorphism, and encapsulation.",
+        "url": "https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/",
+        "subject": "Object-Oriented Programming",
+        "topic": "OOP Basics",
+        "type": "Article",
+        "difficultyLevel": "Beginner",
+        "platform": "GeeksforGeeks",
+        "duration": "8 hours",
+        "rating": 4.8,
+        "companies": [
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "OOP",
+            "Java"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Data Structures and Algorithms Course",
+        "description": "Complete DSA course covering arrays, trees, graphs, and more.",
+        "url": "https://www.geeksforgeeks.org/data-structures/",
+        "subject": "Data Structures",
+        "topic": "Arrays",
+        "type": "Course",
+        "difficultyLevel": "Intermediate",
+        "platform": "GeeksforGeeks",
+        "duration": "40 hours",
+        "rating": 4.9,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "DSA",
+            "Algorithms"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Striver's A2Z DSA Course",
+        "description": "Comprehensive DSA preparation course for coding interviews.",
+        "url": "https://takeuforward.org/strivers-a2z-dsa-course/",
+        "subject": "Data Structures",
+        "topic": "Trees",
+        "type": "Course",
+        "difficultyLevel": "Intermediate",
+        "platform": "TakeUForward",
+        "duration": "50 hours",
+        "rating": 5.0,
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "DSA",
+            "Interview Prep"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Introduction to Algorithms",
+        "description": "Learn algorithm design techniques such as divide and conquer and dynamic programming.",
+        "url": "https://www.geeksforgeeks.org/fundamentals-of-algorithms/",
+        "subject": "Algorithms",
+        "topic": "Sorting Algorithms",
+        "type": "Article",
+        "difficultyLevel": "Intermediate",
+        "platform": "GeeksforGeeks",
+        "duration": "15 hours",
+        "rating": 4.7,
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "Algorithms",
+            "Sorting"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Database Management Systems Tutorial",
+        "description": "Complete guide to DBMS concepts and SQL queries.",
+        "url": "https://www.geeksforgeeks.org/dbms/",
+        "subject": "Database Management Systems",
+        "topic": "SQL",
+        "type": "Article",
+        "difficultyLevel": "Beginner",
+        "platform": "GeeksforGeeks",
+        "duration": "20 hours",
+        "rating": 4.8,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "DBMS",
+            "SQL"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "SQL for Beginners",
+        "description": "Learn SQL from scratch with practical examples.",
+        "url": "https://www.w3schools.com/sql/",
+        "subject": "Database Management Systems",
+        "topic": "SQL",
+        "type": "Documentation",
+        "difficultyLevel": "Beginner",
+        "platform": "W3Schools",
+        "duration": "10 hours",
+        "rating": 4.6,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "SQL",
+            "Database"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Operating Systems Tutorial",
+        "description": "Learn OS concepts including scheduling, memory management, and deadlocks.",
+        "url": "https://www.geeksforgeeks.org/operating-systems/",
+        "subject": "Operating Systems",
+        "topic": "CPU Scheduling",
+        "type": "Article",
+        "difficultyLevel": "Intermediate",
+        "platform": "GeeksforGeeks",
+        "duration": "18 hours",
+        "rating": 4.7,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "OS"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Computer Networks Tutorial",
+        "description": "Comprehensive guide to networking concepts including TCP/IP and OSI model.",
+        "url": "https://www.geeksforgeeks.org/computer-network-tutorials/",
+        "subject": "Computer Networks",
+        "topic": "OSI Model",
+        "type": "Article",
+        "difficultyLevel": "Intermediate",
+        "platform": "GeeksforGeeks",
+        "duration": "15 hours",
+        "rating": 4.7,
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "Networks"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Quantitative Aptitude by RS Aggarwal",
+        "description": "Popular book for aptitude preparation.",
+        "url": "https://www.geeksforgeeks.org/aptitude-questions-and-answers/",
+        "subject": "Aptitude",
+        "topic": "Quantitative Aptitude",
+        "type": "Book",
+        "difficultyLevel": "Beginner",
+        "platform": "GeeksforGeeks",
+        "duration": "25 hours",
+        "rating": 4.6,
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "tags": [
+            "Aptitude",
+            "Quantitative"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Logical Reasoning Tutorial",
+        "description": "Practice logical reasoning problems for placement exams.",
+        "url": "https://www.geeksforgeeks.org/logical-reasoning/",
+        "subject": "Aptitude",
+        "topic": "Logical Reasoning",
+        "type": "Article",
+        "difficultyLevel": "Beginner",
+        "platform": "GeeksforGeeks",
+        "duration": "12 hours",
+        "rating": 4.5,
+        "companies": [
+            "TCS",
+            "Infosys"
+        ],
+        "tags": [
+            "Aptitude",
+            "Reasoning"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "Grokking the System Design Interview",
+        "description": "A complete guide to mastering system design interviews.",
+        "url": "https://www.educative.io/courses/grokking-the-system-design-interview",
+        "subject": "System Design",
+        "topic": "Scalability",
+        "type": "Course",
+        "difficultyLevel": "Advanced",
+        "platform": "Educative",
+        "duration": "35 hours",
+        "rating": 4.9,
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "System Design",
+            "Scalability"
+        ],
+        "isActive": true
+    },
+    {
+        "title": "System Design Primer",
+        "description": "Open-source guide to large-scale system design.",
+        "url": "https://github.com/donnemartin/system-design-primer",
+        "subject": "System Design",
+        "topic": "Distributed Systems",
+        "type": "Documentation",
+        "difficultyLevel": "Advanced",
+        "platform": "GitHub",
+        "duration": "30 hours",
+        "rating": 5.0,
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "tags": [
+            "System Design",
+            "Distributed Systems"
+        ],
+        "isActive": true
+    }
+]

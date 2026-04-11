@@ -1,0 +1,42 @@
+{
+    "name": "learnpath",
+    "version": "1.0.0",
+    "description": "LearnPath is a company-specific placement preparation platform that generates personalized learning paths, quizzes, and study plans using the MERN stack and Python-based machine learning.",
+    "main": "index.js",
+    "private": true,
+    "scripts": {
+        "install-all": "npm install --prefix backend && npm install --prefix frontend",
+        "backend": "npm run dev --prefix backend",
+        "frontend": "npm start --prefix frontend",
+        "ml": "cd ml-service && python main.py",
+        "ml:uvicorn": "cd ml-service && uvicorn main:app --reload",
+        "dev": "concurrently \"npm run backend\" \"npm run frontend\" \"npm run ml:uvicorn\"",
+        "server": "npm run backend",
+        "client": "npm run frontend",
+        "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+        "seed": "node backend/scripts/seedData.js",
+        "build": "npm run build --prefix frontend",
+        "clean": "npx rimraf node_modules backend/node_modules frontend/node_modules",
+        "lint": "echo \"No linting configured yet\""
+    },
+    "keywords": [
+        "learnpath",
+        "placement-preparation",
+        "mern",
+        "machine-learning",
+        "education",
+        "react",
+        "nodejs",
+        "mongodb",
+        "python",
+        "fastapi"
+    ],
+    "devDependencies": {
+        "concurrently": "^9.0.1",
+        "rimraf": "^5.0.5"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    }
+}
