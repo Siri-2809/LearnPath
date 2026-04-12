@@ -16,6 +16,9 @@ import errorHandler from "./middleware/errorMiddleware.js";
 // Scheduler
 import initializeSchedulers from "./utils/scheduler.js";
 
+// ML Service Initialization
+import { initializeMLService } from "./services/mlService.js";
+
 // Routes
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -32,6 +35,12 @@ connectDB();
 const app = express();
 
 // ===============================
+// Server Configuration
+// ===============================
+const PORT = process.env.PORT || 5000;
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+// ===============================
 // Global Middleware
 // ===============================
 app.use(express.json());
@@ -39,7 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Logging in development mode
-if (process.env.NODE_ENV === "development") {
+if (NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 
@@ -50,6 +59,7 @@ app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
         message: "🚀 LearnPath API is running...",
+        environment: NODE_ENV,
     });
 });
 
@@ -70,19 +80,20 @@ app.use("/api/resources", resourceRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// ===============================
-// Initialize Background Schedulers
-// ===============================
-initializeSchedulers();
 
 // ===============================
 // Server Configuration
 // ===============================
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(
-        `🚀 Server running in ${process.env.NODE_ENV || "development"
+        `🚀 Server running in ${NODE_ENV}
         } mode on port ${PORT}`
     );
+
+    // Initialize ML Service Connectivity
+    await initializeMLService();
+
+    // Initialize Background Schedulers
+    initializeSchedulers();
 });

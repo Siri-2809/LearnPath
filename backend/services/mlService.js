@@ -14,25 +14,26 @@ const ML_SERVICE_URL =
     process.env.ML_SERVICE_URL || "http://127.0.0.1:8000";
 
 /**
+ * Reusable Axios Client for ML Service
+ */
+const mlClient = axios.create({
+    baseURL: ML_SERVICE_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    timeout: 10000,
+});
+
+/**
  * Perform Skill Gap Analysis
  * Sends quiz scores to the ML service to identify weak subjects.
  *
  * @param {Object} scores - Subject-wise scores
- * @returns {Array} weak subjects
+ * @returns {Object} Skill gap analysis result
  */
 export const analyzeSkillGap = async (scores) => {
     try {
-        const response = await axios.post(
-            `${ML_SERVICE_URL}/skill-gap`,
-            { scores },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                timeout: 10000,
-            }
-        );
-
+        const response = await mlClient.post("/skill-gap", { scores });
         return response.data;
     } catch (error) {
         console.error(
@@ -45,8 +46,19 @@ export const analyzeSkillGap = async (scores) => {
             (subject) => scores[subject] < 50
         );
 
+        const values = Object.values(scores);
+        const averageScore =
+            values.length > 0
+                ? values.reduce((a, b) => a + b, 0) / values.length
+                : 0;
+
         return {
+            success: true,
+            scores,
             weak_subjects: weakSubjects,
+            strong_subjects: [],
+            average_score: Number(averageScore.toFixed(2)),
+            performance: "Fallback Analysis",
             source: "fallback",
         };
     }
@@ -54,23 +66,16 @@ export const analyzeSkillGap = async (scores) => {
 
 /**
  * Get Resource Recommendations
- * Sends subject preferences to the ML service.
+ * Sends weak subjects to the ML service.
  *
- * @param {Array} subjects - List of subjects
- * @returns {Array} recommended resources
+ * @param {Array} weakSubjects - List of weak subjects
+ * @returns {Object} Recommended resources
  */
-export const getRecommendations = async (subjects) => {
+export const getRecommendations = async (weakSubjects) => {
     try {
-        const response = await axios.post(
-            `${ML_SERVICE_URL}/recommend`,
-            { subjects },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                timeout: 10000,
-            }
-        );
+        const response = await mlClient.post("/recommend", {
+            weak_subjects: weakSubjects,
+        });
 
         return response.data;
     } catch (error) {
@@ -81,7 +86,9 @@ export const getRecommendations = async (subjects) => {
 
         // Fallback: Return empty recommendations
         return {
+            success: false,
             recommendations: [],
+            message: "Fallback recommendations returned.",
             source: "fallback",
         };
     }
@@ -91,14 +98,11 @@ export const getRecommendations = async (subjects) => {
  * Check ML Service Health
  * Useful for verifying connectivity with the Python microservice.
  *
- * @returns {Object} service status
+ * @returns {Object} Service status
  */
 export const checkMLServiceHealth = async () => {
     try {
-        const response = await axios.get(`${ML_SERVICE_URL}/health`, {
-            timeout: 5000,
-        });
-
+        const response = await mlClient.get("/health");
         return response.data;
     } catch (error) {
         console.warn(
@@ -110,5 +114,19 @@ export const checkMLServiceHealth = async () => {
             status: "unavailable",
             message: "ML Service is not reachable",
         };
+    }
+};
+
+/**
+ * Initialize ML Service Connectivity Check
+ * This function should be called when the backend server starts.
+ */
+export const initializeMLService = async () => {
+    const status = await checkMLServiceHealth();
+
+    if (status.status === "healthy") {
+        console.log("✅ ML Service Connected Successfully");
+    } else {
+        console.warn("⚠️ ML Service Unavailable. Using fallback mechanisms.");
     }
 };

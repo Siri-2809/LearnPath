@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Load environment variables
 dotenv.config();
@@ -14,11 +17,26 @@ import Subject from "../models/Subject.js";
 import Question from "../models/Question.js";
 import Resource from "../models/Resource.js";
 
-// Data Files
-import companies from "../data/companies.json" assert { type: "json" };
-import subjects from "../data/subjects.json" assert { type: "json" };
-import questions from "../data/questions.json" assert { type: "json" };
-import resources from "../data/resources.json" assert { type: "json" };
+// Resolve directory paths for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load JSON data using fs
+const companies = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "../data/companies.json"), "utf-8")
+);
+
+const subjects = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "../data/subjects.json"), "utf-8")
+);
+
+const questions = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "../data/questions.json"), "utf-8")
+);
+
+const resources = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "../data/resources.json"), "utf-8")
+);
 
 /**
  * Import Data into Database
@@ -47,7 +65,7 @@ const importData = async () => {
             name: "Admin User",
             email: "admin@learnpath.com",
             password: "admin123",
-            role: "admin"
+            role: "admin",
         });
 
         console.log("👤 Admin user created:");
