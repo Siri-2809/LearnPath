@@ -1,5 +1,147 @@
 [
     {
+        "question": "What is a variable in programming?",
+        "options": [
+            "A container to store data values",
+            "A function name",
+            "A type of loop",
+            "A data structure"
+        ],
+        "correctAnswer": "A container to store data values",
+        "subject": "Programming Fundamentals",
+        "topic": "Variables and Data Types",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "A variable is a named container used to store data values in memory.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which of the following is NOT a primitive data type in most programming languages?",
+        "options": [
+            "int",
+            "float",
+            "string",
+            "array"
+        ],
+        "correctAnswer": "array",
+        "subject": "Programming Fundamentals",
+        "topic": "Variables and Data Types",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Array is a composite data type (collection of elements), not a primitive data type.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What does a function do in programming?",
+        "options": [
+            "Performs a specific task and can be reused",
+            "Stores data only",
+            "Loops through data",
+            "Declares variables"
+        ],
+        "correctAnswer": "Performs a specific task and can be reused",
+        "subject": "Programming Fundamentals",
+        "topic": "Functions",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "A function is a reusable block of code that performs a specific task.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is the difference between pass by value and pass by reference?",
+        "options": [
+            "Pass by value creates a copy; pass by reference uses the original",
+            "They are the same",
+            "Pass by reference is used for functions only",
+            "Pass by value cannot modify the original"
+        ],
+        "correctAnswer": "Pass by value creates a copy; pass by reference uses the original",
+        "subject": "Programming Fundamentals",
+        "topic": "Functions",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Pass by value passes a copy of data, while pass by reference passes the address of the original data.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is a loop used for in programming?",
+        "options": [
+            "To repeat a block of code multiple times",
+            "To store data",
+            "To declare functions",
+            "To make comments"
+        ],
+        "correctAnswer": "To repeat a block of code multiple times",
+        "subject": "Programming Fundamentals",
+        "topic": "Control Structures",
+        "difficulty": "Easy",
+        "companies": [
+            "TCS",
+            "Infosys",
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Loops are used to execute a block of code repeatedly based on a condition.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is recursion?",
+        "options": [
+            "A function calling itself directly or indirectly",
+            "A loop that repeats forever",
+            "A type of data structure",
+            "An error in programming"
+        ],
+        "correctAnswer": "A function calling itself directly or indirectly",
+        "subject": "Programming Fundamentals",
+        "topic": "Recursion",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon",
+            "TCS",
+            "Infosys"
+        ],
+        "marks": 1,
+        "explanation": "Recursion is when a function calls itself to solve a problem by breaking it into smaller subproblems.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
         "question": "What is the time complexity of accessing an array element?",
         "options": [
             "O(1)",
@@ -1971,6 +2113,204 @@
         "marks": 2,
         "explanation": "IaaS provides virtual machines and infrastructure.",
         "testType": "mock",
+        "isActive": true
+    },
+    {
+        "question": "What is the main goal of horizontal scaling?",
+        "options": [
+            "Increasing server capacity",
+            "Adding more servers to distribute load",
+            "Upgrading hardware",
+            "Improving single server performance"
+        ],
+        "correctAnswer": "Adding more servers to distribute load",
+        "subject": "System Design",
+        "topic": "Scalability",
+        "difficulty": "Easy",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Horizontal scaling adds more servers to handle increased load.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is caching used for in system design?",
+        "options": [
+            "Storing permanent data",
+            "Improving response time and reducing database load",
+            "Backup purposes",
+            "Encryption"
+        ],
+        "correctAnswer": "Improving response time and reducing database load",
+        "subject": "System Design",
+        "topic": "Caching",
+        "difficulty": "Easy",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Caching stores frequently accessed data in fast storage.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which approach improves system reliability?",
+        "options": [
+            "Single point of failure",
+            "Redundancy and failover",
+            "Increasing dependencies",
+            "Slower responses"
+        ],
+        "correctAnswer": "Redundancy and failover",
+        "subject": "System Design",
+        "topic": "Reliability",
+        "difficulty": "Easy",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Redundancy and failover mechanisms ensure high availability.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What does load balancing do?",
+        "options": [
+            "Encrypts data",
+            "Distributes client requests across multiple servers",
+            "Stores data",
+            "Manages databases"
+        ],
+        "correctAnswer": "Distributes client requests across multiple servers",
+        "subject": "System Design",
+        "topic": "Load Balancing",
+        "difficulty": "Easy",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Load balancers distribute traffic evenly across servers.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which architecture pattern involves breaking a system into smaller services?",
+        "options": [
+            "Monolithic",
+            "Microservices",
+            "Standalone",
+            "Layered"
+        ],
+        "correctAnswer": "Microservices",
+        "subject": "System Design",
+        "topic": "Architecture",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Microservices architecture breaks systems into independent services.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is database sharding?",
+        "options": [
+            "Creating backups",
+            "Partitioning data across multiple databases",
+            "Increasing performance of one database",
+            "Copying data"
+        ],
+        "correctAnswer": "Partitioning data across multiple databases",
+        "subject": "System Design",
+        "topic": "Database Scaling",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Sharding distributes data horizontally across multiple database instances.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which component is used to store temporary data in a system?",
+        "options": [
+            "Database",
+            "File system",
+            "Cache",
+            "Backup"
+        ],
+        "correctAnswer": "Cache",
+        "subject": "System Design",
+        "topic": "Caching",
+        "difficulty": "Easy",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Caches store frequently accessed data temporarily for faster retrieval.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "What is the main advantage of asynchronous communication?",
+        "options": [
+            "Immediate response",
+            "Systems can work independently without waiting",
+            "Lower latency",
+            "Guaranteed delivery"
+        ],
+        "correctAnswer": "Systems can work independently without waiting",
+        "subject": "System Design",
+        "topic": "Communication Patterns",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Asynchronous communication allows systems to process requests independently.",
+        "testType": "diagnostic",
+        "isActive": true
+    },
+    {
+        "question": "Which pattern is used to separate data access logic?",
+        "options": [
+            "MVC",
+            "Repository Pattern",
+            "Observer Pattern",
+            "Factory Pattern"
+        ],
+        "correctAnswer": "Repository Pattern",
+        "subject": "System Design",
+        "topic": "Design Patterns",
+        "difficulty": "Medium",
+        "companies": [
+            "Google",
+            "Microsoft",
+            "Amazon"
+        ],
+        "marks": 1,
+        "explanation": "Repository Pattern abstracts data access layers.",
+        "testType": "diagnostic",
         "isActive": true
     }
 ]

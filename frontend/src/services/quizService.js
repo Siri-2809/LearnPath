@@ -31,18 +31,21 @@ import {
  * Generate a diagnostic or mock quiz
  * @param {string} company
  * @param {string} testType - "diagnostic" or "mock"
- * @param {number} limit
+ * @param {number} limit - Optional limit (if null, returns all questions)
  * @returns {Promise<Object>}
  */
 export const generateQuiz = async (
     company,
     testType = "diagnostic",
-    limit = 15
+    limit = null
 ) => {
     try {
-        const response = await api.get(`/quiz/${company}`, {
-            params: { testType, limit },
-        });
+        const params = { testType };
+        if (limit) {
+            params.limit = limit;
+        }
+        
+        const response = await api.get(`/quiz/${company}`, { params });
         return response.data;
     } catch (error) {
         console.error(

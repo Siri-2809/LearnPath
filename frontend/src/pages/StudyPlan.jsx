@@ -52,7 +52,6 @@ const StudyPlan = () => {
 
             const payload = {
                 company,
-                durationDays: 30,
                 weakSubjects: [],
             };
 

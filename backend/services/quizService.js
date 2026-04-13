@@ -1,5 +1,6 @@
 import Question from "../models/Question.js";
 import QuizResult from "../models/QuizResult.js";
+import Company from "../models/Company.js";
 
 /**
  * LearnPath - Quiz Service
@@ -8,34 +9,110 @@ import QuizResult from "../models/QuizResult.js";
  */
 
 /**
- * Generate a company-specific quiz.
+ * Generate a company-specific quiz with questions from all required subjects.
  *
  * @param {string} company - Selected company name
- * @param {number} totalQuestions - Number of questions required
- * @returns {Array} List of quiz questions
+ * @param {number} totalQuestions - Optional limit (if not provided, returns all available)
+ * @param {string} testType - "diagnostic" or "mock"
+ * @returns {Array} List of quiz questions with balanced difficulty
  */
-export const generateQuiz = async (company, totalQuestions = 15, testType = "diagnostic") => {
+export const generateQuiz = async (company, totalQuestions = null, testType = "diagnostic") => {
     try {
         if (!company) {
             throw new Error("Company name is required to generate a quiz.");
         }
 
-        // Fetch active questions for the selected company
-        const questions = await Question.find({
-            companies: company,
+        // Fetch company details to get required subjects
+        const companyData = await Company.findOne({ name: company, isActive: true });
+
+        if (!companyData) {
+            throw new Error(`Company '${company}' not found or is inactive.`);
+        }
+
+        const requiredSubjects = companyData.subjects || [];
+
+        if (requiredSubjects.length === 0) {
+            throw new Error(`No subjects assigned to company '${company}'.`);
+        }
+
+        // Fetch questions from all required subjects
+        const allQuestions = await Question.find({
+            subject: { $in: requiredSubjects },
+            companies: { $in: [company] },
             testType,
             isActive: true,
         }).select("-correctAnswer");
 
-        if (!questions.length) {
-            throw new Error(`No questions found for ${company}.`);
+        if (allQuestions.length === 0) {
+            throw new Error(
+                `No questions found for company '${company}' in subjects: ${requiredSubjects.join(", ")}`
+            );
         }
 
-        // Shuffle questions randomly
-        const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
+        // Organize questions by subject and difficulty
+        const questionsBySubject = {};
+        const difficulties = ["Easy", "Medium", "Hard"];
 
-        // Return the requested number of questions
-        return shuffledQuestions.slice(0, totalQuestions);
+        requiredSubjects.forEach((subject) => {
+            questionsBySubject[subject] = {
+                Easy: [],
+                Medium: [],
+                Hard: [],
+            };
+        });
+
+        // Group questions by subject and difficulty
+        allQuestions.forEach((q) => {
+            if (
+                questionsBySubject[q.subject] &&
+                questionsBySubject[q.subject][q.difficulty]
+            ) {
+                questionsBySubject[q.subject][q.difficulty].push(q);
+            }
+        });
+
+        // Build balanced quiz ensuring each subject is covered
+        let selectedQuestions = [];
+
+        if (!totalQuestions || totalQuestions >= allQuestions.length) {
+            // Return all available questions
+            selectedQuestions = allQuestions;
+        } else {
+            // Strategy: Ensure each subject gets at least one question,
+            // then fill remaining slots with balanced difficulty distribution
+
+            const questionsPerSubject = Math.floor(totalQuestions / requiredSubjects.length);
+            const remainingSlots = totalQuestions % requiredSubjects.length;
+
+            requiredSubjects.forEach((subject, index) => {
+                const subjectQuestions = questionsBySubject[subject];
+                let toAdd = questionsPerSubject;
+
+                // Distribute remaining slots
+                if (index < remainingSlots) {
+                    toAdd++;
+                }
+
+                // Pick questions with balanced difficulty
+                const combined = [
+                    ...subjectQuestions.Easy,
+                    ...subjectQuestions.Medium,
+                    ...subjectQuestions.Hard,
+                ];
+
+                // Shuffle and take needed questions
+                const shuffled = combined.sort(() => 0.5 - Math.random());
+                selectedQuestions.push(...shuffled.slice(0, Math.max(1, toAdd))); // At least 1 per subject
+            });
+
+            // Ensure we have exactly totalQuestions
+            selectedQuestions = selectedQuestions.slice(0, totalQuestions);
+        }
+
+        // Final shuffle
+        const shuffledQuestions = selectedQuestions.sort(() => 0.5 - Math.random());
+
+        return shuffledQuestions;
     } catch (error) {
         throw new Error(`Quiz Generation Error: ${error.message}`);
     }
@@ -96,10 +173,24 @@ export const evaluateQuiz = async (answers = []) => {
         // Identify weak and strong subjects
         const weakSubjects = [];
         const strongSubjects = [];
+        const subjectWiseScores = [];
 
         Object.keys(subjectStats).forEach((subject) => {
             const { correct, total } = subjectStats[subject];
             const percentage = (correct / total) * 100;
+            
+            // Get total marks for this subject
+            const subjectMarks = evaluatedAnswers
+                .filter((ans) => ans.subject === subject)
+                .reduce((sum, ans) => sum + ans.marksAwarded, 0);
+
+            subjectWiseScores.push({
+                subject,
+                correct,
+                total,
+                score: subjectMarks,
+                percentage,
+            });
 
             if (percentage < 50) {
                 weakSubjects.push(subject);
@@ -116,6 +207,7 @@ export const evaluateQuiz = async (answers = []) => {
             percentage,
             weakSubjects,
             strongSubjects,
+            subjectWiseScores,
             answers: evaluatedAnswers,
         };
     } catch (error) {
@@ -157,6 +249,7 @@ export const submitQuiz = async (data) => {
             percentage: evaluation.percentage,
             weakSubjects: evaluation.weakSubjects,
             strongSubjects: evaluation.strongSubjects,
+            subjectWiseScores: evaluation.subjectWiseScores,
             timeTaken: timeTaken || 0,
             attemptNumber: previousAttempts + 1,
         });

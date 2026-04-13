@@ -37,7 +37,10 @@ export const generateCompanyQuiz = async (req, res) => {
                 });
             }
         }
-        const questions = await generateQuiz(company, parseInt(limit) || 15, testType);
+        
+        // Parse limit: if not provided, use null to return ALL questions
+        const questionLimit = limit ? parseInt(limit) : null;
+        const questions = await generateQuiz(company, questionLimit, testType);
 
         res.status(200).json({
             success: true,

@@ -30,20 +30,35 @@ const Resources = () => {
         const fetchResources = async () => {
             try {
                 setLoading(true);
+                console.log("📥 Fetching resources...");
+                
                 const response = await resourceService.getAllResources();
-                const data = response.data || response;
+                console.log("✓ Resources response received:", response);
 
-                setResources(data);
-                setFilteredResources(data);
+                // Extract resources from response
+                // Backend returns: { success: true, count, resources: [...] }
+                const resourcesArray = response.resources || response.data?.resources || response || [];
+
+                if (!Array.isArray(resourcesArray)) {
+                    console.error("❌ Resources is not an array:", typeof resourcesArray, resourcesArray);
+                    setError("Invalid resources data received from server.");
+                    setLoading(false);
+                    return;
+                }
+
+                console.log(`✓ Found ${resourcesArray.length} resources`);
+                setResources(resourcesArray);
+                setFilteredResources(resourcesArray);
 
                 // Extract unique subjects
                 const uniqueSubjects = [
                     "All",
-                    ...new Set(data.map((resource) => resource.subject)),
+                    ...new Set(resourcesArray.map((resource) => resource.subject)),
                 ];
+                console.log("✓ Unique subjects:", uniqueSubjects);
                 setSubjects(uniqueSubjects);
             } catch (err) {
-                console.error("Error fetching resources:", err);
+                console.error("❌ Error fetching resources:", err);
                 setError("Failed to load resources. Please try again later.");
             } finally {
                 setLoading(false);
@@ -103,11 +118,15 @@ const Resources = () => {
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
                 >
-                    {subjects.map((subject, index) => (
-                        <option key={index} value={subject}>
-                            {subject}
-                        </option>
-                    ))}
+                    {subjects && subjects.length > 0 ? (
+                        subjects.map((subject, index) => (
+                            <option key={index} value={subject}>
+                                {subject}
+                            </option>
+                        ))
+                    ) : (
+                        <option>No subjects available</option>
+                    )}
                 </select>
             </div>
 

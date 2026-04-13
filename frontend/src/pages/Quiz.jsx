@@ -22,12 +22,12 @@ const Quiz = () => {
     const navigate = useNavigate();
 
     const testType = searchParams.get("testType") || "diagnostic";
-    const limit = parseInt(searchParams.get("limit")) || 15;
+    const limitParam = searchParams.get("limit");
 
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState({});
     const [loading, setLoading] = useState(true);
-    const [timeLeft, setTimeLeft] = useState(limit * 60); // seconds
+    const [timeLeft, setTimeLeft] = useState(null); // Will be set based on actual questions
     const [error, setError] = useState("");
     const [submitting, setSubmitting] = useState(false);
 
@@ -38,11 +38,23 @@ const Quiz = () => {
         const fetchQuiz = async () => {
             try {
                 setLoading(true);
+                
+                // Validate company parameter
+                if (!company) {
+                    setError("Company parameter is missing. Please select a company first.");
+                    setLoading(false);
+                    return;
+                }
+
+                console.log(`📥 Fetching quiz for ${company} (${testType})`);
+                
                 const response = await quizService.generateQuiz(
                     company,
                     testType,
-                    limit
+                    limitParam ? parseInt(limitParam) : null
                 );
+
+                console.log("✓ Quiz response received:", response);
 
                 const quizData =
                     response.data?.questions ||
@@ -50,17 +62,33 @@ const Quiz = () => {
                     response.data ||
                     [];
 
+                if (!Array.isArray(quizData)) {
+                    console.error("❌ Quiz data is not an array:", typeof quizData, quizData);
+                    setError("Invalid quiz data received from server. Please try again.");
+                    setLoading(false);
+                    return;
+                }
+
+                if (quizData.length === 0) {
+                    setError(`No questions available for ${company} ${testType} test.`);
+                    setLoading(false);
+                    return;
+                }
+
                 setQuestions(quizData);
+                // Set timer based on actual number of questions (2 min per question)
+                setTimeLeft(quizData.length * 120); // 2 minutes per question in seconds
             } catch (err) {
-                console.error("Error fetching quiz:", err);
-                setError("Failed to load quiz. Please try again.");
+                console.error("❌ Error fetching quiz:", err);
+                const errorMsg = err?.message || err?.response?.data?.message || "Failed to load quiz. Please try again.";
+                setError(errorMsg);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchQuiz();
-    }, [company, testType, limit]);
+    }, [company, testType, limitParam]);
 
     /**
      * Countdown Timer
@@ -123,7 +151,7 @@ const Quiz = () => {
                 company,
                 testType,
                 answers: formattedAnswers,
-                timeTaken: limit * 60 - timeLeft,
+                timeTaken: Math.max(0, questions.length * 120 - timeLeft), // Total time allocated - time remaining
             };
 
             console.log("📤 Submitting quiz payload:", payload);

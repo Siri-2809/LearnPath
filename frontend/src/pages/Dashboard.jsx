@@ -21,6 +21,7 @@ const Dashboard = () => {
 
     const [performanceData, setPerformanceData] = useState([]);
     const [skillGap, setSkillGap] = useState(null);
+    const [averageScore, setAverageScore] = useState(null);
     const [loading, setLoading] = useState(true);
 
     /**
@@ -29,30 +30,49 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                // Fetch quiz results
-                const result = await quizService.getAllQuizResults();
+                // Only fetch if user has selected a company
+                if (!user?.targetCompany) {
+                    setLoading(false);
+                    return;
+                }
 
-                if (result?.data?.length) {
-                    const latestResult = result.data[0];
+                // Fetch latest quiz result for the selected company
+                const response = await quizService.getLatestQuizResult(
+                    user.targetCompany
+                );
+
+                if (response?.result) {
+                    const latestResult = response.result;
 
                     // Format data for chart
                     const subjectScores =
                         latestResult.subjectWiseScores?.map((item) => ({
                             subject: item.subject,
                             score: item.score,
+                            percentage: item.percentage,
                         })) || [];
 
                     setPerformanceData(subjectScores);
 
+                    // Calculate average score from subject-wise percentages
+                    if (subjectScores.length > 0) {
+                        const avgPercentage =
+                            subjectScores.reduce((sum, item) => sum + (item.percentage || 0), 0) /
+                            subjectScores.length;
+                        setAverageScore(avgPercentage);
+                    }
+
                     // Prepare scores for ML service
                     const scores = {};
                     subjectScores.forEach((item) => {
-                        scores[item.subject] = item.score;
+                        scores[item.subject] = item.percentage;
                     });
 
                     // Analyze skill gap using ML
-                    const analysis = await quizService.analyzeSkillGap(scores);
-                    setSkillGap(analysis);
+                    if (Object.keys(scores).length > 0) {
+                        const analysis = await quizService.analyzeSkillGap(scores);
+                        setSkillGap(analysis);
+                    }
                 }
             } catch (error) {
                 console.error("Dashboard Error:", error);
@@ -62,7 +82,7 @@ const Dashboard = () => {
         };
 
         fetchDashboardData();
-    }, []);
+    }, [user?.targetCompany]);
 
     if (loading) {
         return (
@@ -98,7 +118,9 @@ const Dashboard = () => {
                 <div className="card stat-card">
                     <h3>Average Score</h3>
                     <p>
-                        {skillGap?.average_score
+                        {averageScore !== null
+                            ? `${averageScore.toFixed(1)}%`
+                            : skillGap?.average_score
                             ? `${skillGap.average_score.toFixed(1)}%`
                             : "N/A"}
                     </p>
@@ -158,9 +180,12 @@ const Dashboard = () => {
                         <p>Choose your dream company.</p>
                     </Link>
 
-                    <Link to="/quiz/Google" className="card action-card">
+                    <Link 
+                        to={user?.targetCompany ? `/quiz/${user.targetCompany}` : "/companies"} 
+                        className="card action-card"
+                    >
                         <h3>📝 Take Quiz</h3>
-                        <p>Assess your technical skills.</p>
+                        <p>{user?.targetCompany ? `${user.targetCompany} Quiz` : "Select a company first."}</p>
                     </Link>
 
                     <Link to="/learning-path" className="card action-card">

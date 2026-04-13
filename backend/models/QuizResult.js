@@ -85,6 +85,31 @@ const quizResultSchema = new mongoose.Schema(
                 trim: true,
             },
         ],
+        subjectWiseScores: [
+            {
+                subject: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+                correct: {
+                    type: Number,
+                    default: 0,
+                },
+                total: {
+                    type: Number,
+                    default: 0,
+                },
+                score: {
+                    type: Number,
+                    default: 0,
+                },
+                percentage: {
+                    type: Number,
+                    default: 0,
+                },
+            },
+        ],
         testType: {
             type: String,
             enum: ["diagnostic", "mock"],

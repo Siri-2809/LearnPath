@@ -56,12 +56,20 @@ const ProgressChart = ({ data = [] }) => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="subject" />
                     <YAxis domain={[0, 100]} />
-                    <Tooltip />
+                    <Tooltip 
+                        formatter={(value) => value ? `${value.toFixed(1)}%` : "N/A"}
+                    />
                     <Legend />
                     <Bar
-                        dataKey="score"
-                        name="Score (%)"
+                        dataKey="percentage"
+                        name="Percentage (%)"
                         fill="#2563eb"
+                        radius={[6, 6, 0, 0]}
+                    />
+                    <Bar
+                        dataKey="score"
+                        name="Score (Marks)"
+                        fill="#10b981"
                         radius={[6, 6, 0, 0]}
                     />
                 </BarChart>

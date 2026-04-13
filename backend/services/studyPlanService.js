@@ -1,6 +1,7 @@
 import StudyPlan from "../models/StudyPlan.js";
 import LearningPath from "../models/LearningPath.js";
 import Resource from "../models/Resource.js";
+import Subject from "../models/Subject.js";
 
 /**
  * LearnPath - Study Plan Service
@@ -13,19 +14,27 @@ import Resource from "../models/Resource.js";
 
 /**
  * Helper function to distribute subjects across days.
+ * Each subject gets consecutive days before moving to the next subject.
  */
 const distributeSubjects = (subjects, durationDays) => {
     const schedule = [];
-    let day = 1;
-    let index = 0;
+    
+    if (subjects.length === 0) return schedule;
 
-    while (day <= durationDays) {
-        schedule.push({
-            day,
-            subject: subjects[index % subjects.length],
-        });
-        index++;
-        day++;
+    // Calculate days per subject (evenly distributed)
+    const daysPerSubject = Math.ceil(durationDays / subjects.length);
+    let day = 1;
+
+    for (let i = 0; i < subjects.length && day <= durationDays; i++) {
+        const subject = subjects[i];
+        // Assign consecutive days to this subject
+        for (let j = 0; j < daysPerSubject && day <= durationDays; j++) {
+            schedule.push({
+                day,
+                subject,
+            });
+            day++;
+        }
     }
 
     return schedule;
@@ -36,14 +45,14 @@ const distributeSubjects = (subjects, durationDays) => {
  *
  * @param {String} userId
  * @param {String} company
- * @param {Number} durationDays
+ * @param {Number} durationDays - Optional. If not provided, calculates based on total topics
  * @param {Array} weakSubjects
  * @returns {Object} Study Plan
  */
 export const generateStudyPlan = async (
     userId,
     company,
-    durationDays = 30,
+    durationDays = null,
     weakSubjects = []
 ) => {
     try {
@@ -73,8 +82,54 @@ export const generateStudyPlan = async (
             subjects = [...new Set(prioritized)];
         }
 
-        // Distribute subjects across days
-        const schedule = distributeSubjects(subjects, durationDays);
+        // Pre-fetch subject data and resources for each subject
+        const subjectDataMap = {};
+        const subjectResourcesMap = {};
+        let totalTopics = 0;
+
+        for (const subjectName of subjects) {
+            // Fetch subject data to get topics
+            const subjectData = await Subject.findOne({ name: subjectName });
+            subjectDataMap[subjectName] = subjectData;
+            
+            if (subjectData && subjectData.topics) {
+                totalTopics += subjectData.topics.length;
+            }
+
+            // Fetch resources for this subject
+            const resources = await Resource.find({
+                subject: subjectName,
+                isActive: true,
+                $or: [
+                    { companies: { $in: [company] } },
+                    { companies: { $size: 0 } },
+                ],
+            }).sort({ rating: -1 });
+            subjectResourcesMap[subjectName] = resources;
+        }
+
+        // Calculate duration based on total topics if not provided
+        if (!durationDays || durationDays < totalTopics) {
+            durationDays = totalTopics;
+        }
+
+        // Create a comprehensive schedule covering all topics sequentially
+        const schedule = [];
+        let day = 1;
+
+        for (const subjectName of subjects) {
+            const subjectData = subjectDataMap[subjectName];
+            if (subjectData && subjectData.topics) {
+                for (const topic of subjectData.topics) {
+                    schedule.push({
+                        day,
+                        subject: subjectName,
+                        topic,
+                    });
+                    day++;
+                }
+            }
+        }
 
         const sessions = [];
         let currentDate = new Date();
@@ -82,16 +137,15 @@ export const generateStudyPlan = async (
 
         for (const item of schedule) {
             const subject = item.subject;
+            const topic = item.topic;
+            const resources = subjectResourcesMap[subject] || [];
 
-            // Fetch best resource for the subject
-            const resource = await Resource.findOne({
-                subject,
-                isActive: true,
-                $or: [
-                    { companies: { $in: [company] } },
-                    { companies: { $size: 0 } },
-                ],
-            }).sort({ rating: -1 });
+            // Find a resource that matches this topic (if available)
+            let resource = null;
+            if (resources.length > 0) {
+                const matchingResource = resources.find((r) => r.topic === topic);
+                resource = matchingResource || resources[0];
+            }
 
             const durationHours = 2;
             totalStudyHours += durationHours;
@@ -100,7 +154,7 @@ export const generateStudyPlan = async (
                 day: item.day,
                 date: new Date(currentDate),
                 subject,
-                topic: resource?.topic || "General Concepts",
+                topic,
                 resource: resource?._id || null,
                 durationHours,
                 status: "Pending",
