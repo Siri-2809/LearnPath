@@ -21,15 +21,14 @@ const StudyPlan = () => {
 
     const [studyPlan, setStudyPlan] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [generating, setGenerating] = useState(false);
     const [error, setError] = useState("");
 
     const company = user?.targetCompany;
 
     /**
-     * Fetch Study Plan
+     * Fetch or generate Study Plan
      */
-    const fetchStudyPlan = async () => {
+    const fetchOrGenerateStudyPlan = async () => {
         if (!company) {
             setLoading(false);
             return;
@@ -37,48 +36,38 @@ const StudyPlan = () => {
 
         try {
             setLoading(true);
-            const response =
-                await studyPlanService.getStudyPlanByCompany(company);
-
-            const data = response?.data || response;
-            setStudyPlan(data);
-        } catch (err) {
-            console.warn("No study plan found. Generate a new one.");
-            setStudyPlan(null);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    /**
-     * Generate Study Plan
-     */
-    const handleGenerateStudyPlan = async () => {
-        if (!company) {
-            setError("Please select a target company first.");
-            return;
-        }
-
-        try {
-            setGenerating(true);
             setError("");
+
+            try {
+                const response =
+                    await studyPlanService.getStudyPlanByCompany(company);
+
+                if (response?.studyPlan) {
+                    setStudyPlan(response.studyPlan);
+                    return;
+                }
+            } catch (fetchErr) {
+                // Study plan not found, proceed to generate below.
+            }
 
             const payload = {
                 company,
                 durationDays: 30,
-                weakSubjects: [], // Can be enhanced using ML insights
+                weakSubjects: [],
             };
 
-            const response =
-                await studyPlanService.generateStudyPlan(payload);
-
-            const data = response?.data || response;
-            setStudyPlan(data);
+            const generated = await studyPlanService.generateStudyPlan(payload);
+            if (generated?.studyPlan) {
+                setStudyPlan(generated.studyPlan);
+            } else {
+                throw new Error("Invalid response while generating study plan.");
+            }
         } catch (err) {
-            console.error("Error generating study plan:", err);
-            setError("Failed to generate study plan. Please try again.");
+            console.error("Error loading/generating study plan:", err);
+            setStudyPlan(null);
+            setError("Failed to load study plan. Please try again.");
         } finally {
-            setGenerating(false);
+            setLoading(false);
         }
     };
 
@@ -92,14 +81,14 @@ const StudyPlan = () => {
                 day,
                 status
             );
-            fetchStudyPlan();
+            fetchOrGenerateStudyPlan();
         } catch (err) {
             console.error("Error updating study session:", err);
         }
     };
 
     useEffect(() => {
-        fetchStudyPlan();
+        fetchOrGenerateStudyPlan();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [company]);
 
@@ -138,24 +127,6 @@ const StudyPlan = () => {
                     <Link to="/companies" className="btn btn-primary">
                         Select Company
                     </Link>
-                </div>
-            )}
-
-            {/* Generate Study Plan */}
-            {company && !studyPlan && (
-                <div className="card text-center">
-                    <h3>No Study Plan Found</h3>
-                    <p>
-                        Generate a structured plan tailored to crack{" "}
-                        <strong>{company}</strong>.
-                    </p>
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleGenerateStudyPlan}
-                        disabled={generating}
-                    >
-                        {generating ? "Generating..." : "Generate Study Plan"}
-                    </button>
                 </div>
             )}
 

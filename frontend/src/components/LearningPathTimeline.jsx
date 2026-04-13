@@ -25,7 +25,30 @@ import { formatDate } from "../utils/helpers";
  */
 
 const LearningPathTimeline = ({ learningPath }) => {
-    if (!learningPath || !learningPath.steps?.length) {
+    const steps = Array.isArray(learningPath?.steps)
+        ? learningPath.steps
+        : Array.isArray(learningPath?.path)
+        ? learningPath.path.map((item) => ({
+              title: item.subject,
+              description: `Focus on ${item.subject} concepts and problem solving.`,
+              status: "Pending",
+              duration:
+                  typeof item.estimatedHours === "number"
+                      ? `${item.estimatedHours} hrs`
+                      : undefined,
+              resources: Array.isArray(item.resources)
+                  ? item.resources
+                        .map((resource) =>
+                            typeof resource === "string"
+                                ? resource
+                                : resource?.title || resource?.name || null
+                        )
+                        .filter(Boolean)
+                  : [],
+          }))
+        : [];
+
+    if (!learningPath || !steps.length) {
         return (
             <div className="card text-center">
                 <h3>No Learning Path Available</h3>
@@ -63,12 +86,12 @@ const LearningPathTimeline = ({ learningPath }) => {
 
             {/* Timeline */}
             <div className="timeline">
-                {learningPath.steps.map((step, index) => (
+                {steps.map((step, index) => (
                     <div className="timeline-item" key={index}>
                         {/* Timeline Indicator */}
                         <div className="timeline-indicator">
                             <span className={getStatusClass(step.status)}></span>
-                            {index !== learningPath.steps.length - 1 && (
+                            {index !== steps.length - 1 && (
                                 <span className="timeline-line"></span>
                             )}
                         </div>

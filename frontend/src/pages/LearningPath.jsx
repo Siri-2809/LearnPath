@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import learningPathService from "../services/learningPathService";
 import LearningPathTimeline from "../components/LearningPathTimeline";
 import useAuth from "../hooks/useAuth";
@@ -11,6 +11,7 @@ import useAuth from "../hooks/useAuth";
  * Features:
  * - Fetches personalized learning paths
  * - Generates a new learning path if none exists
+ * - Uses diagnostic quiz results to prioritize weak subjects
  * - Displays data in a timeline format
  * - Integrated with backend APIs
  * - Responsive and user-friendly UI
@@ -18,67 +19,70 @@ import useAuth from "../hooks/useAuth";
 
 const LearningPath = () => {
     const { company: paramCompany } = useParams();
+    const navigate = useNavigate();
     const { user } = useAuth();
 
     const company = paramCompany || user?.targetCompany;
 
     const [learningPath, setLearningPath] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [generating, setGenerating] = useState(false);
     const [error, setError] = useState("");
 
     /**
-     * Fetch Learning Path
+     * Fetch or generate Learning Path
      */
-    const fetchLearningPath = async () => {
+    const fetchOrGenerateLearningPath = async () => {
         if (!company) {
+            console.warn("⚠️ No company selected");
+            setError("No target company selected. Redirecting to company selection...");
             setLoading(false);
+            setTimeout(() => navigate("/companies"), 1000);
             return;
         }
 
         try {
             setLoading(true);
-            const response =
-                await learningPathService.getLearningPathByCompany(company);
+            setError("");
+            console.log("🔍 Fetching/generating learning path for:", company);
+            
+            // Try to fetch existing learning path
+            try {
+                const response = await learningPathService.getLearningPathByCompany(company);
+                // Service returns: { success, learningPath: {...} }
+                if (response?.learningPath) {
+                    console.log("✅ Found existing learning path");
+                    setLearningPath(response.learningPath);
+                    setLoading(false);
+                    return;
+                }
+            } catch (fetchErr) {
+                // No existing path, continue to generate
+                console.log("📝 No existing learning path. Generating new one...");
+            }
 
-            const data = response?.data || response;
-            setLearningPath(data);
+            // Generate new learning path
+            console.log("🚀 Generating learning path...");
+            const generateResponse = await learningPathService.generateLearningPath(company);
+            // Service returns: { success, message, learningPath: {...} }
+            console.log("📥 Generation response:", generateResponse);
+            
+            if (generateResponse?.learningPath) {
+                console.log("✅ Learning path generated successfully");
+                setLearningPath(generateResponse.learningPath);
+            } else {
+                throw new Error("Invalid response from learning path generation");
+            }
         } catch (err) {
-            console.warn("No learning path found. Generate a new one.");
-            setLearningPath(null);
+            console.error("❌ Error generating learning path:", err);
+            setError(`Failed to generate learning path: ${err.message}`);
         } finally {
             setLoading(false);
         }
     };
 
-    /**
-     * Generate Learning Path
-     */
-    const handleGenerateLearningPath = async () => {
-        if (!company) {
-            setError("Please select a target company first.");
-            return;
-        }
-
-        try {
-            setGenerating(true);
-            setError("");
-
-            const response =
-                await learningPathService.generateLearningPath(company);
-
-            const data = response?.data || response;
-            setLearningPath(data);
-        } catch (err) {
-            console.error("Error generating learning path:", err);
-            setError("Failed to generate learning path. Please try again.");
-        } finally {
-            setGenerating(false);
-        }
-    };
 
     useEffect(() => {
-        fetchLearningPath();
+        fetchOrGenerateLearningPath();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [company]);
 
@@ -112,35 +116,31 @@ const LearningPath = () => {
             {/* No Company Selected */}
             {!company && (
                 <div className="card text-center">
-                    <h3>No Target Company Selected</h3>
-                    <p>Please select a company to generate your learning path.</p>
+                    <h3>📋 No Target Company Selected</h3>
+                    <p>Please complete the diagnostic quiz and select a company to generate your learning path.</p>
                     <a href="/companies" className="btn btn-primary">
                         Select Company
                     </a>
                 </div>
             )}
 
-            {/* Generate Learning Path */}
-            {company && !learningPath && (
-                <div className="card text-center">
-                    <h3>No Learning Path Found</h3>
-                    <p>
-                        Generate a personalized roadmap based on your target company and
-                        performance.
-                    </p>
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleGenerateLearningPath}
-                        disabled={generating}
-                    >
-                        {generating ? "Generating..." : "Generate Learning Path"}
-                    </button>
-                </div>
+            {/* Display Learning Path */}
+            {company && learningPath && (
+                <LearningPathTimeline learningPath={learningPath} />
             )}
 
-            {/* Display Learning Path */}
-            {learningPath && (
-                <LearningPathTimeline learningPath={learningPath} />
+            {/* Debug Info - Remove after testing */}
+            {company && !learningPath && !error && (
+                <div className="card" style={{ backgroundColor: "#f0f4ff", borderLeft: "4px solid #2563eb" }}>
+                    <p style={{ color: "#2563eb", fontSize: "0.9rem", margin: 0 }}>
+                        📊 Loading state: <code>loading={loading.toString()}</code> | 
+                        Company: <code>{company}</code> | 
+                        Learning Path: <code>{learningPath ? "loaded" : "null"}</code>
+                    </p>
+                    <p style={{ color: "#666", fontSize: "0.85rem", margin: "5px 0 0 0" }}>
+                        💡 Check browser console (F12) for detailed logs
+                    </p>
+                </div>
             )}
 
             {/* Inline Styling */}

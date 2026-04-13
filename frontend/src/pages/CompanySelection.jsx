@@ -30,15 +30,12 @@ const CompanySelection = () => {
 
                 const response = await companyService.getAllCompanies();
 
-                // Normalize response to always be an array
-                const companyData =
-                    response?.data?.data || // If response = { success, data }
-                    response?.data ||       // If response = axios response
-                    response ||             // If service already returns data
-                    [];
-
-                const companiesArray = Array.isArray(companyData)
-                    ? companyData
+                // Extract companies from response
+                // Backend returns: { success: true, count, companies: [...] }
+                const companiesArray = Array.isArray(response?.companies)
+                    ? response.companies
+                    : Array.isArray(response?.data?.companies)
+                    ? response.data.companies
                     : [];
 
                 setCompanies(companiesArray);

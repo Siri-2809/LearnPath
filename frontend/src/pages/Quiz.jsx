@@ -80,6 +80,7 @@ const Quiz = () => {
         }, 1000);
 
         return () => clearInterval(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [timeLeft, questions]);
 
     /**
@@ -110,10 +111,13 @@ const Quiz = () => {
         setSubmitting(true);
 
         try {
+            // Format answers - include all questions (answered and unanswered)
             const formattedAnswers = questions.map((q) => ({
                 questionId: q._id,
-                selectedAnswer: answers[q._id] || null,
+                selectedAnswer: answers[q._id] || null, // null for unanswered questions
             }));
+
+            console.log(`📊 Questions: ${questions.length}, Answered: ${Object.keys(answers).length}`);
 
             const payload = {
                 company,
@@ -122,11 +126,22 @@ const Quiz = () => {
                 timeTaken: limit * 60 - timeLeft,
             };
 
+            console.log("📤 Submitting quiz payload:", payload);
+
             const response = await quizService.submitQuiz(payload);
+            console.log("📥 Quiz response:", response);
+
+            // quizService returns: { success: true, message, result: {...} }
+            if (!response?.result) {
+                console.error("⚠️ Missing result in response:", response);
+                throw new Error("Invalid response from backend");
+            }
+
+            console.log("✅ Quiz submitted successfully");
 
             navigate("/quiz-result", {
                 state: {
-                    result: response.data || response,
+                    result: response.result,
                     questions,
                     userAnswers: answers,
                     company,
@@ -134,8 +149,17 @@ const Quiz = () => {
                 },
             });
         } catch (err) {
-            console.error("Error submitting quiz:", err);
-            setError("Failed to submit quiz. Please try again.");
+            // Get the actual error message from backend
+            const errorMsg = err?.response?.data?.message || 
+                           err?.message || 
+                           "Failed to submit quiz. Please try again.";
+            console.error("❌ Error submitting quiz:", err);
+            console.error("Error details:", {
+                status: err?.response?.status,
+                data: err?.response?.data,
+                message: errorMsg,
+            });
+            setError(errorMsg);
         } finally {
             setSubmitting(false);
         }
@@ -198,6 +222,19 @@ const Quiz = () => {
 
             {/* Submit Button */}
             <div className="quiz-submit">
+                {Object.keys(answers).length < questions.length && (
+                    <div style={{
+                        padding: "10px",
+                        marginBottom: "15px",
+                        backgroundColor: "#fef3c7",
+                        border: "1px solid #f59e0b",
+                        borderRadius: "8px",
+                        color: "#92400e",
+                        fontSize: "0.9rem"
+                    }}>
+                        ⚠️ You have {questions.length - Object.keys(answers).length} unanswered question(s). They will be marked as incorrect.
+                    </div>
+                )}
                 <button
                     className="btn btn-primary"
                     onClick={handleSubmit}

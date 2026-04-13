@@ -120,6 +120,15 @@ const AppRoutes = () => {
             />
 
             <Route
+                path="/learning-path/:company"
+                element={
+                    <ProtectedRoute>
+                        <LearningPath />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
                 path="/study-plan"
                 element={
                     <ProtectedRoute>

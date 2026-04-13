@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCompanyLogo } from "../utils/helpers";
+import userService from "../services/userService";
 
 /**
  * ============================================
@@ -19,12 +20,27 @@ import { getCompanyLogo } from "../utils/helpers";
 
 const CompanyCard = ({ company }) => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     /**
-     * Handle company selection
+     * Handle company selection - saves target company and navigates
      */
-    const handleSelectCompany = () => {
-        navigate(`/quiz/${company.name}`);
+    const handleSelectCompany = async () => {
+        try {
+            setLoading(true);
+            setError("");
+
+            // Save target company to user profile
+            await userService.updateTargetCompany(company.name);
+
+            // Navigate to quiz page
+            navigate(`/quiz/${company.name}`);
+        } catch (err) {
+            console.error("Error selecting company:", err);
+            setError("Failed to select company. Please try again.");
+            setLoading(false);
+        }
     };
 
     return (
@@ -54,12 +70,27 @@ const CompanyCard = ({ company }) => {
                 ))}
             </div>
 
+            {/* Error Message */}
+            {error && (
+                <div style={{
+                    color: "#dc2626",
+                    fontSize: "0.875rem",
+                    marginBottom: "10px",
+                    padding: "8px",
+                    backgroundColor: "#fee2e2",
+                    borderRadius: "4px",
+                }}>
+                    {error}
+                </div>
+            )}
+
             {/* Action Button */}
             <button
                 className="btn btn-primary company-btn"
                 onClick={handleSelectCompany}
+                disabled={loading}
             >
-                Start Preparation
+                {loading ? "Selecting..." : "Start Preparation"}
             </button>
 
             {/* Inline Styles */}

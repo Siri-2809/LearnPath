@@ -26,9 +26,17 @@ const QuizResult = () => {
     const company = location.state?.company || "Unknown";
     const testType = location.state?.testType || "diagnostic";
 
+    // Build a map of correct answers from result data
+    const correctAnswersMap = {};
+    if (result?.answers && Array.isArray(result.answers)) {
+        result.answers.forEach((ans) => {
+            correctAnswersMap[ans.question] = ans.correctAnswer;
+        });
+    }
+
     const [analysis, setAnalysis] = useState(null);
     const [recommendations, setRecommendations] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [, setLoading] = useState(false);
 
     /**
      * Redirect if accessed directly without data
@@ -226,7 +234,7 @@ const QuizResult = () => {
                         question={question}
                         index={index}
                         selectedAnswer={userAnswers[question._id]}
-                        correctAnswer={question.correctAnswer}
+                        correctAnswer={correctAnswersMap[question._id] || question.correctAnswer}
                         showResult={true}
                     />
                 ))}
@@ -235,17 +243,24 @@ const QuizResult = () => {
             {/* Action Buttons */}
             <div className="result-actions">
                 <button
-                    className="btn btn-secondary"
-                    onClick={() => navigate("/dashboard")}
+                    className="btn btn-primary"
+                    onClick={() => navigate(`/learning-path/${company}`)}
                 >
-                    Back to Dashboard
+                    📚 View Learning Path
                 </button>
 
                 <button
-                    className="btn btn-primary"
+                    className="btn btn-secondary"
                     onClick={() => navigate(`/quiz/${company}`)}
                 >
-                    Retake Quiz
+                    🔄 Retake Quiz
+                </button>
+
+                <button
+                    className="btn btn-outline"
+                    onClick={() => navigate("/dashboard")}
+                >
+                    Back to Dashboard
                 </button>
             </div>
 

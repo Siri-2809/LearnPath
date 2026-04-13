@@ -32,7 +32,9 @@ import {
  */
 
 const StudyPlanTable = ({ studyPlan, onUpdateStatus }) => {
-    if (!studyPlan || !studyPlan.sessions?.length) {
+    const normalizedPlan = studyPlan?.studyPlan || studyPlan;
+
+    if (!normalizedPlan || !normalizedPlan.sessions?.length) {
         return (
             <div className="card text-center">
                 <h3>No Study Plan Available</h3>
@@ -41,7 +43,7 @@ const StudyPlanTable = ({ studyPlan, onUpdateStatus }) => {
         );
     }
 
-    const { _id, company, durationDays, createdAt, sessions } = studyPlan;
+    const { _id, company, durationDays, createdAt, sessions } = normalizedPlan;
 
     // Calculate progress
     const completedSessions = sessions.filter(
