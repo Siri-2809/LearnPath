@@ -21,7 +21,9 @@ const StudyPlan = () => {
 
     const [studyPlan, setStudyPlan] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [generating, setGenerating] = useState(false);
     const [error, setError] = useState("");
+    const [durationDays, setDurationDays] = useState(30);
 
     const company = user?.targetCompany;
 
@@ -52,6 +54,7 @@ const StudyPlan = () => {
 
             const payload = {
                 company,
+                durationDays,
                 weakSubjects: [],
             };
 
@@ -67,6 +70,33 @@ const StudyPlan = () => {
             setError("Failed to load study plan. Please try again.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleRegenerateStudyPlan = async () => {
+        if (!company) return;
+
+        try {
+            setGenerating(true);
+            setError("");
+
+            const payload = {
+                company,
+                durationDays,
+                weakSubjects: [],
+            };
+
+            const generated = await studyPlanService.generateStudyPlan(payload);
+            if (generated?.studyPlan) {
+                setStudyPlan(generated.studyPlan);
+            } else {
+                throw new Error("Invalid response while generating study plan.");
+            }
+        } catch (err) {
+            console.error("Error regenerating study plan:", err);
+            setError("Failed to regenerate study plan. Please try again.");
+        } finally {
+            setGenerating(false);
         }
     };
 
@@ -90,6 +120,12 @@ const StudyPlan = () => {
         fetchOrGenerateStudyPlan();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [company]);
+
+    useEffect(() => {
+        if (studyPlan?.durationDays) {
+            setDurationDays(studyPlan.durationDays);
+        }
+    }, [studyPlan?.durationDays]);
 
     /**
      * Loading State
@@ -116,6 +152,36 @@ const StudyPlan = () => {
             {/* Error Message */}
             {error && (
                 <div className="alert alert-danger text-center">{error}</div>
+            )}
+
+            {/* Duration Controls */}
+            {company && (
+                <div className="card duration-controls">
+                    <label htmlFor="durationDays">Choose plan duration (days):</label>
+                    <div className="duration-actions">
+                        <input
+                            id="durationDays"
+                            type="number"
+                            min="1"
+                            max="180"
+                            className="form-control"
+                            value={durationDays}
+                            onChange={(e) => setDurationDays(Number(e.target.value) || 1)}
+                        />
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleRegenerateStudyPlan}
+                            disabled={generating || loading}
+                        >
+                            {generating ? "Generating..." : "Generate for Selected Days"}
+                        </button>
+                    </div>
+                    {studyPlan?.durationDays && (
+                        <p className="text-muted" style={{ marginTop: "8px" }}>
+                            Current plan duration: <strong>{studyPlan.durationDays}</strong> days
+                        </p>
+                    )}
+                </div>
             )}
 
             {/* No Company Selected */}
@@ -174,9 +240,36 @@ const StudyPlan = () => {
           text-align: center;
         }
 
+                .duration-controls {
+                    margin-bottom: 20px;
+                    text-align: left;
+                }
+
+                .duration-actions {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    margin-top: 8px;
+                }
+
+                .form-control {
+                    max-width: 180px;
+                }
+
         .btn {
           margin-top: 10px;
         }
+
+                @media (max-width: 768px) {
+                    .duration-actions {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+
+                    .form-control {
+                        max-width: 100%;
+                    }
+                }
       `}</style>
         </div>
     );

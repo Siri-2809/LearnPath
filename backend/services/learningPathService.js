@@ -2,6 +2,7 @@ import LearningPath from "../models/LearningPath.js";
 import Subject from "../models/Subject.js";
 import Company from "../models/Company.js";
 import Resource from "../models/Resource.js";
+import QuizResult from "../models/QuizResult.js";
 import topologicalSort from "../algorithms/topologicalSort.js";
 
 /**
@@ -39,9 +40,55 @@ export const generateLearningPath = async (userId, companyName) => {
         // Get subjects required for the company
         const companySubjects = company.subjects;
 
+        // Use latest quiz score profile to prioritize weak subjects.
+        const latestQuizResult = await QuizResult.findOne({
+            user: userId,
+            company: companyName,
+        })
+            .sort({ createdAt: -1 })
+            .select("weakSubjects strongSubjects subjectWiseScores");
+
+        const subjectScoreMap = new Map();
+        (latestQuizResult?.subjectWiseScores || []).forEach((item) => {
+            subjectScoreMap.set(item.subject, Number(item.percentage || 0));
+        });
+
+        const weakSubjectsSet = new Set(latestQuizResult?.weakSubjects || []);
+        const strongSubjectsSet = new Set(latestQuizResult?.strongSubjects || []);
+
+        const getSubjectWeight = (subjectName) => {
+            const score = subjectScoreMap.has(subjectName)
+                ? subjectScoreMap.get(subjectName)
+                : null;
+
+            let weight = score === null
+                ? 1
+                : 0.6 + ((100 - score) / 100) * 1.4;
+
+            if (weakSubjectsSet.has(subjectName)) {
+                weight += 0.25;
+            }
+
+            if (strongSubjectsSet.has(subjectName) && !weakSubjectsSet.has(subjectName)) {
+                weight -= 0.15;
+            }
+
+            return Math.min(2, Math.max(0.5, Number(weight.toFixed(2))));
+        };
+
+        const subjectWeights = new Map(
+            allSubjects.map((subject) => [subject.name, getSubjectWeight(subject.name)])
+        );
+
+        // Reorder subjects before topological sort so weak subjects get higher
+        // priority whenever multiple nodes are available at the same dependency level.
+        const prioritizedSubjects = [...allSubjects].sort(
+            (a, b) => (subjectWeights.get(b.name) || 1) - (subjectWeights.get(a.name) || 1)
+        );
+
         // Generate ordered learning path using topological sort
         const orderedSubjects = topologicalSort(
-            allSubjects,
+            prioritizedSubjects,
             companySubjects
         );
 
@@ -54,7 +101,11 @@ export const generateLearningPath = async (userId, companyName) => {
                     (sub) => sub.name === subjectName
                 );
 
-                const estimatedHours = subjectDetails?.estimatedHours || 0;
+                const baseEstimatedHours = subjectDetails?.estimatedHours || 0;
+                const weight = subjectWeights.get(subjectName) || 1;
+                const estimatedHours = Number(
+                    Math.max(1, (baseEstimatedHours * weight)).toFixed(1)
+                );
                 totalEstimatedHours += estimatedHours;
 
                 // Fetch relevant resources

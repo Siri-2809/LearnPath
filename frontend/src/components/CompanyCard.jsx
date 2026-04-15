@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCompanyLogo } from "../utils/helpers";
 import userService from "../services/userService";
+import { getUser, setUser } from "../utils/helpers";
 
 /**
  * ============================================
@@ -34,6 +35,15 @@ const CompanyCard = ({ company }) => {
             // Save target company to user profile
             await userService.updateTargetCompany(company.name);
 
+            // Keep frontend auth cache in sync so dashboard persists company context.
+            const cachedUser = getUser();
+            if (cachedUser) {
+              setUser({
+                ...cachedUser,
+                targetCompany: company.name,
+              });
+            }
+
             // Navigate to quiz page
             navigate(`/quiz/${company.name}`);
         } catch (err) {
@@ -63,7 +73,7 @@ const CompanyCard = ({ company }) => {
 
             {/* Subjects */}
             <div className="company-subjects">
-                {company.subjects?.slice(0, 5).map((subject, index) => (
+              {company.subjects?.map((subject, index) => (
                     <span key={index} className="badge badge-info">
                         {subject}
                     </span>

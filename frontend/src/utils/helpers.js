@@ -253,7 +253,46 @@ export const filterResources = (resources = [], keyword = "") => {
  * @returns {Object}
  */
 export const formatScoresForML = (subjectScores) => {
-    return { scores: subjectScores };
+    const subjectAliasMap = {
+        "Data Structures": "DSA",
+        Algorithms: "DSA",
+        DSA: "DSA",
+        "Database Management Systems": "DBMS",
+        DBMS: "DBMS",
+        "Operating Systems": "OS",
+        OS: "OS",
+        "Computer Networks": "CN",
+        CN: "CN",
+        "Object-Oriented Programming": "OOP",
+        "Programming Fundamentals": "OOP",
+        OOP: "OOP",
+        Aptitude: "Aptitude",
+        "System Design": "System Design",
+    };
+
+    const bucket = {};
+
+    Object.entries(subjectScores || {}).forEach(([subject, value]) => {
+        const mappedSubject = subjectAliasMap[subject];
+        if (!mappedSubject) return;
+
+        const numericValue = Number(value);
+        if (Number.isNaN(numericValue)) return;
+
+        if (!bucket[mappedSubject]) {
+            bucket[mappedSubject] = { sum: 0, count: 0 };
+        }
+
+        bucket[mappedSubject].sum += numericValue;
+        bucket[mappedSubject].count += 1;
+    });
+
+    const normalizedScores = {};
+    Object.entries(bucket).forEach(([subject, stats]) => {
+        normalizedScores[subject] = stats.count > 0 ? stats.sum / stats.count : 0;
+    });
+
+    return { scores: normalizedScores };
 };
 
 /**

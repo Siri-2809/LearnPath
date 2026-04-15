@@ -35,9 +35,9 @@ def validate_scores(scores: Dict[str, float]) -> Dict[str, float]:
     Validate and sanitize input scores.
 
     Ensures:
-    - All expected subjects are present.
-    - Missing subjects are assigned a default score of 0.
-    - Scores are numeric and within the range 0–100.
+    - Only known subjects are accepted.
+    - Only provided subjects are evaluated.
+    - Scores are numeric and within the range 0-100.
 
     Args:
         scores (Dict[str, float]): Input subject scores.
@@ -50,8 +50,9 @@ def validate_scores(scores: Dict[str, float]) -> Dict[str, float]:
 
     validated_scores = {}
 
-    for subject in EXPECTED_SUBJECTS:
-        value = scores.get(subject, 0)
+    for subject, value in scores.items():
+        if subject not in EXPECTED_SUBJECTS:
+            continue
 
         try:
             value = float(value)
@@ -64,6 +65,12 @@ def validate_scores(scores: Dict[str, float]) -> Dict[str, float]:
             )
 
         validated_scores[subject] = round(value, 2)
+
+    if not validated_scores:
+        raise ValueError(
+            "No valid subjects found. Provide at least one of: "
+            + ", ".join(EXPECTED_SUBJECTS)
+        )
 
     return validated_scores
 
@@ -90,9 +97,15 @@ def analyze_skill_gap(scores: Dict[str, float]) -> Dict[str, Any]:
         validated_scores = validate_scores(scores)
 
         # Step 2: Predict weak subjects using ML model
+        attempted_subjects = set(validated_scores.keys())
+
         try:
             ml_result = predict_skill_gap(validated_scores)
-            weak_subjects = ml_result.get("weak_subjects", [])
+            weak_subjects = [
+                subject
+                for subject in ml_result.get("weak_subjects", [])
+                if subject in attempted_subjects
+            ]
         except Exception:
             # Fallback to rule-based detection if ML model fails
             weak_subjects = identify_weak_subjects(validated_scores)

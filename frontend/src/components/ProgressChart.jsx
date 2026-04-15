@@ -57,7 +57,11 @@ const ProgressChart = ({ data = [] }) => {
                     <XAxis dataKey="subject" />
                     <YAxis domain={[0, 100]} />
                     <Tooltip 
-                        formatter={(value) => value ? `${value.toFixed(1)}%` : "N/A"}
+                        formatter={(value) =>
+                            value !== null && value !== undefined
+                                ? `${Number(value).toFixed(1)}%`
+                                : "N/A"
+                        }
                     />
                     <Legend />
                     <Bar

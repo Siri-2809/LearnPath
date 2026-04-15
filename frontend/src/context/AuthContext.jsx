@@ -34,8 +34,9 @@ export const AuthProvider = ({ children }) => {
 
                 if (token) {
                     const profile = await authService.getProfile();
-                    setUserState(profile);
-                    setUser(profile);
+                    const normalizedUser = profile?.user || profile;
+                    setUserState(normalizedUser);
+                    setUser(normalizedUser);
                 }
             } catch (err) {
                 console.error("Authentication initialization failed:", err);
@@ -121,7 +122,13 @@ export const AuthProvider = ({ children }) => {
     const updateProfile = async (updatedData) => {
         try {
             setLoading(true);
-            const updatedUser = await authService.updateProfile(updatedData);
+            const response = await authService.updateProfile(updatedData);
+            const updatedUser = response?.user || response;
+
+            if (response?.token) {
+                setToken(response.token);
+            }
+
             setUser(updatedUser);
             setUserState(updatedUser);
             return { success: true, data: updatedUser };

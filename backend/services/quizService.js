@@ -2,6 +2,31 @@ import Question from "../models/Question.js";
 import QuizResult from "../models/QuizResult.js";
 import Company from "../models/Company.js";
 
+const SUBJECT_ALIAS_MAP = {
+    "algorithms": "Algorithms",
+    "aptitude": "Aptitude",
+    "cn": "Computer Networks",
+    "computer networks": "Computer Networks",
+    "data structures": "Data Structures",
+    "database management systems": "Database Management Systems",
+    "dbms": "Database Management Systems",
+    "dsa": "Data Structures",
+    "object-oriented programming": "Object-Oriented Programming",
+    "oop": "Object-Oriented Programming",
+    "operating systems": "Operating Systems",
+    "programming fundamentals": "Programming Fundamentals",
+    "system design": "System Design",
+};
+
+const normalizeSubjectName = (subject = "") => {
+    const trimmed = String(subject || "").trim();
+    if (!trimmed) {
+        return "";
+    }
+
+    return SUBJECT_ALIAS_MAP[trimmed.toLowerCase()] || trimmed;
+};
+
 /**
  * LearnPath - Quiz Service
  * ------------------------
@@ -29,19 +54,42 @@ export const generateQuiz = async (company, totalQuestions = null, testType = "d
             throw new Error(`Company '${company}' not found or is inactive.`);
         }
 
-        const requiredSubjects = companyData.subjects || [];
+        const requiredSubjects = [...new Set(
+            (companyData.subjects || [])
+                .map((subject) => normalizeSubjectName(subject))
+                .filter(Boolean)
+        )];
 
         if (requiredSubjects.length === 0) {
             throw new Error(`No subjects assigned to company '${company}'.`);
         }
 
-        // Fetch questions from all required subjects
-        const allQuestions = await Question.find({
+        // Fetch company-tagged questions from all required subjects.
+        let allQuestions = await Question.find({
             subject: { $in: requiredSubjects },
             companies: { $in: [company] },
             testType,
             isActive: true,
         }).select("-correctAnswer");
+
+        // If some required subjects are missing for this company, fallback to
+        // generic subject-level questions for the same test type.
+        const companyCoveredSubjects = new Set(
+            allQuestions.map((q) => normalizeSubjectName(q.subject))
+        );
+        const uncoveredSubjects = requiredSubjects.filter(
+            (subject) => !companyCoveredSubjects.has(subject)
+        );
+
+        if (uncoveredSubjects.length > 0) {
+            const fallbackQuestions = await Question.find({
+                subject: { $in: uncoveredSubjects },
+                testType,
+                isActive: true,
+            }).select("-correctAnswer");
+
+            allQuestions = [...allQuestions, ...fallbackQuestions];
+        }
 
         if (allQuestions.length === 0) {
             throw new Error(
@@ -51,7 +99,6 @@ export const generateQuiz = async (company, totalQuestions = null, testType = "d
 
         // Organize questions by subject and difficulty
         const questionsBySubject = {};
-        const difficulties = ["Easy", "Medium", "Hard"];
 
         requiredSubjects.forEach((subject) => {
             questionsBySubject[subject] = {
@@ -63,26 +110,50 @@ export const generateQuiz = async (company, totalQuestions = null, testType = "d
 
         // Group questions by subject and difficulty
         allQuestions.forEach((q) => {
+            const normalizedSubject = normalizeSubjectName(q.subject);
             if (
-                questionsBySubject[q.subject] &&
-                questionsBySubject[q.subject][q.difficulty]
+                questionsBySubject[normalizedSubject] &&
+                questionsBySubject[normalizedSubject][q.difficulty]
             ) {
-                questionsBySubject[q.subject][q.difficulty].push(q);
+                questionsBySubject[normalizedSubject][q.difficulty].push(q);
             }
         });
+
+        // Enforce at least one available question for every required subject.
+        const missingSubjects = requiredSubjects.filter((subject) => {
+            const grouped = questionsBySubject[subject] || {};
+            const subjectCount =
+                (grouped.Easy?.length || 0) +
+                (grouped.Medium?.length || 0) +
+                (grouped.Hard?.length || 0);
+            return subjectCount === 0;
+        });
+
+        if (missingSubjects.length > 0) {
+            throw new Error(
+                `Cannot generate ${testType} quiz for '${company}'. Missing questions for subject(s): ${missingSubjects.join(", ")}`
+            );
+        }
 
         // Build balanced quiz ensuring each subject is covered
         let selectedQuestions = [];
 
-        if (!totalQuestions || totalQuestions >= allQuestions.length) {
+        // If a limit is provided, it cannot be lower than required subject count.
+        const normalizedTotalQuestions = totalQuestions
+            ? Math.max(totalQuestions, requiredSubjects.length)
+            : null;
+
+        if (!normalizedTotalQuestions || normalizedTotalQuestions >= allQuestions.length) {
             // Return all available questions
             selectedQuestions = allQuestions;
         } else {
             // Strategy: Ensure each subject gets at least one question,
             // then fill remaining slots with balanced difficulty distribution
 
-            const questionsPerSubject = Math.floor(totalQuestions / requiredSubjects.length);
-            const remainingSlots = totalQuestions % requiredSubjects.length;
+            const questionsPerSubject = Math.floor(
+                normalizedTotalQuestions / requiredSubjects.length
+            );
+            const remainingSlots = normalizedTotalQuestions % requiredSubjects.length;
 
             requiredSubjects.forEach((subject, index) => {
                 const subjectQuestions = questionsBySubject[subject];
@@ -105,8 +176,8 @@ export const generateQuiz = async (company, totalQuestions = null, testType = "d
                 selectedQuestions.push(...shuffled.slice(0, Math.max(1, toAdd))); // At least 1 per subject
             });
 
-            // Ensure we have exactly totalQuestions
-            selectedQuestions = selectedQuestions.slice(0, totalQuestions);
+            // Ensure we have exactly normalizedTotalQuestions.
+            selectedQuestions = selectedQuestions.slice(0, normalizedTotalQuestions);
         }
 
         // Final shuffle
@@ -166,6 +237,7 @@ export const evaluateQuiz = async (answers = []) => {
                 correctAnswer: question.correctAnswer,
                 isCorrect,
                 subject: question.subject,
+                questionMarks: question.marks,
                 marksAwarded,
             });
         }
@@ -177,18 +249,27 @@ export const evaluateQuiz = async (answers = []) => {
 
         Object.keys(subjectStats).forEach((subject) => {
             const { correct, total } = subjectStats[subject];
-            const percentage = (correct / total) * 100;
-            
-            // Get total marks for this subject
-            const subjectMarks = evaluatedAnswers
-                .filter((ans) => ans.subject === subject)
-                .reduce((sum, ans) => sum + ans.marksAwarded, 0);
+            // Compute subject score using marks for accurate percentages.
+            const subjectAnswers = evaluatedAnswers.filter(
+                (ans) => ans.subject === subject
+            );
+            const subjectMarks = subjectAnswers.reduce(
+                (sum, ans) => sum + ans.marksAwarded,
+                0
+            );
+            const subjectTotalMarks = subjectAnswers.reduce(
+                (sum, ans) => sum + (ans.questionMarks || 0),
+                0
+            );
+            const percentage =
+                subjectTotalMarks > 0 ? (subjectMarks / subjectTotalMarks) * 100 : 0;
 
             subjectWiseScores.push({
                 subject,
                 correct,
                 total,
                 score: subjectMarks,
+                totalMarks: subjectTotalMarks,
                 percentage,
             });
 

@@ -2,6 +2,7 @@ import StudyPlan from "../models/StudyPlan.js";
 import LearningPath from "../models/LearningPath.js";
 import Resource from "../models/Resource.js";
 import Subject from "../models/Subject.js";
+import QuizResult from "../models/QuizResult.js";
 
 /**
  * LearnPath - Study Plan Service
@@ -12,33 +13,7 @@ import Subject from "../models/Subject.js";
  * - Available Duration
  */
 
-/**
- * Helper function to distribute subjects across days.
- * Each subject gets consecutive days before moving to the next subject.
- */
-const distributeSubjects = (subjects, durationDays) => {
-    const schedule = [];
-    
-    if (subjects.length === 0) return schedule;
-
-    // Calculate days per subject (evenly distributed)
-    const daysPerSubject = Math.ceil(durationDays / subjects.length);
-    let day = 1;
-
-    for (let i = 0; i < subjects.length && day <= durationDays; i++) {
-        const subject = subjects[i];
-        // Assign consecutive days to this subject
-        for (let j = 0; j < daysPerSubject && day <= durationDays; j++) {
-            schedule.push({
-                day,
-                subject,
-            });
-            day++;
-        }
-    }
-
-    return schedule;
-};
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 /**
  * Generate a personalized study plan.
@@ -72,29 +47,64 @@ export const generateStudyPlan = async (
             );
         }
 
-        // Prioritize weak subjects if available
-        let subjects = learningPath.subjects;
-        if (weakSubjects && weakSubjects.length > 0) {
-            const prioritized = [
-                ...weakSubjects,
-                ...subjects.filter((sub) => !weakSubjects.includes(sub)),
-            ];
-            subjects = [...new Set(prioritized)];
-        }
+        // Use latest quiz result as source of skill-gap severity for personalization.
+        const latestQuizResult = await QuizResult.findOne({
+            user: userId,
+            company,
+        })
+            .sort({ createdAt: -1 })
+            .select("weakSubjects strongSubjects subjectWiseScores");
+
+        const detectedWeakSubjects =
+            weakSubjects && weakSubjects.length > 0
+                ? weakSubjects
+                : latestQuizResult?.weakSubjects || [];
+
+        const subjectScoreMap = new Map();
+        (latestQuizResult?.subjectWiseScores || []).forEach((item) => {
+            subjectScoreMap.set(item.subject, Number(item.percentage || 0));
+        });
+
+        const strongSubjectsSet = new Set(latestQuizResult?.strongSubjects || []);
+        const weakSubjectsSet = new Set(detectedWeakSubjects || []);
+
+        let subjects = [...new Set(learningPath.subjects || [])];
+
+        const subjectWeightMap = new Map();
+        subjects.forEach((subject) => {
+            const score = subjectScoreMap.has(subject)
+                ? subjectScoreMap.get(subject)
+                : null;
+
+            // Lower score -> higher weight (more time), higher score -> lower weight.
+            let weight = score === null
+                ? 1
+                : 0.6 + ((100 - score) / 100) * 1.4;
+
+            if (weakSubjectsSet.has(subject)) {
+                weight += 0.25;
+            }
+
+            if (strongSubjectsSet.has(subject) && !weakSubjectsSet.has(subject)) {
+                weight -= 0.15;
+            }
+
+            subjectWeightMap.set(subject, clamp(Number(weight.toFixed(2)), 0.5, 2));
+        });
+
+        // Sort subjects by computed weakness so weaker topics appear earlier.
+        subjects.sort(
+            (a, b) => (subjectWeightMap.get(b) || 1) - (subjectWeightMap.get(a) || 1)
+        );
 
         // Pre-fetch subject data and resources for each subject
-        const subjectDataMap = {};
         const subjectResourcesMap = {};
-        let totalTopics = 0;
+        const subjectTopicsMap = {};
 
         for (const subjectName of subjects) {
             // Fetch subject data to get topics
             const subjectData = await Subject.findOne({ name: subjectName });
-            subjectDataMap[subjectName] = subjectData;
-            
-            if (subjectData && subjectData.topics) {
-                totalTopics += subjectData.topics.length;
-            }
+            subjectTopicsMap[subjectName] = subjectData?.topics || [];
 
             // Fetch resources for this subject
             const resources = await Resource.find({
@@ -108,59 +118,116 @@ export const generateStudyPlan = async (
             subjectResourcesMap[subjectName] = resources;
         }
 
-        // Calculate duration based on total topics if not provided
-        if (!durationDays || durationDays < totalTopics) {
-            durationDays = totalTopics;
-        }
-
-        // Create a comprehensive schedule covering all topics sequentially
-        const schedule = [];
-        let day = 1;
-
+        // Build a flat topic sequence from prioritized subjects.
+        const topicSequence = [];
         for (const subjectName of subjects) {
-            const subjectData = subjectDataMap[subjectName];
-            if (subjectData && subjectData.topics) {
-                for (const topic of subjectData.topics) {
-                    schedule.push({
-                        day,
+            const topics = subjectTopicsMap[subjectName] || [];
+            if (topics.length > 0) {
+                for (const topic of topics) {
+                    topicSequence.push({
                         subject: subjectName,
                         topic,
                     });
-                    day++;
                 }
             }
         }
+
+        if (!durationDays || durationDays < 1) {
+            durationDays = Math.max(topicSequence.length, 1);
+        }
+
+        // Distribute all topics across user-selected days.
+        // When topics > days, multiple topics fall on same day.
+        // When days > topics, remaining days are filled with revision sessions.
+        const schedule = [];
+
+        if (topicSequence.length > 0) {
+            topicSequence.forEach((item, index) => {
+                const day = Math.min(
+                    durationDays,
+                    Math.floor((index * durationDays) / topicSequence.length) + 1
+                );
+
+                schedule.push({
+                    day,
+                    subject: item.subject,
+                    topic: item.topic,
+                });
+            });
+        }
+
+        // Ensure all selected days exist in the plan.
+        for (let day = 1; day <= durationDays; day++) {
+            const hasSessionForDay = schedule.some((session) => session.day === day);
+            if (!hasSessionForDay) {
+                const fallbackSubject =
+                    subjects.length > 0
+                        ? subjects[(day - 1) % subjects.length]
+                        : "General";
+                schedule.push({
+                    day,
+                    subject: fallbackSubject,
+                    topic: "Targeted revision and practice",
+                });
+            }
+        }
+
+        schedule.sort((a, b) => a.day - b.day);
 
         const sessions = [];
         let currentDate = new Date();
         let totalStudyHours = 0;
 
-        for (const item of schedule) {
-            const subject = item.subject;
-            const topic = item.topic;
-            const resources = subjectResourcesMap[subject] || [];
+        // Group scheduled topics by day and create one session per day.
+        const dayBuckets = new Map();
+        schedule.forEach((item) => {
+            if (!dayBuckets.has(item.day)) {
+                dayBuckets.set(item.day, []);
+            }
+            dayBuckets.get(item.day).push(item);
+        });
 
-            // Find a resource that matches this topic (if available)
+        for (let day = 1; day <= durationDays; day++) {
+            const dayItems = dayBuckets.get(day) || [];
+
+            const primarySubject = dayItems[0]?.subject || subjects[(day - 1) % subjects.length] || "General";
+            const topicsForDay = dayItems.map((item) => item.topic).filter(Boolean);
+
+            const topicText = topicsForDay.length > 0
+                ? topicsForDay.join(", ")
+                : "Revision and practice";
+
+            const resources = subjectResourcesMap[primarySubject] || [];
             let resource = null;
             if (resources.length > 0) {
-                const matchingResource = resources.find((r) => r.topic === topic);
-                resource = matchingResource || resources[0];
+                resource = resources[0];
             }
 
-            const durationHours = 2;
+            const averageDayWeight = dayItems.length > 0
+                ? dayItems.reduce(
+                    (sum, item) => sum + (subjectWeightMap.get(item.subject) || 1),
+                    0
+                ) / dayItems.length
+                : (subjectWeightMap.get(primarySubject) || 1);
+
+            const durationHours = clamp(
+                Number((1 + averageDayWeight * 1.2 + Math.max(0, dayItems.length - 1) * 0.4).toFixed(1)),
+                1,
+                5
+            );
+
             totalStudyHours += durationHours;
 
             sessions.push({
-                day: item.day,
+                day,
                 date: new Date(currentDate),
-                subject,
-                topic,
+                subject: primarySubject,
+                topic: topicText,
                 resource: resource?._id || null,
                 durationHours,
                 status: "Pending",
             });
 
-            // Move to next day
             currentDate.setDate(currentDate.getDate() + 1);
         }
 
@@ -175,7 +242,7 @@ export const generateStudyPlan = async (
             studyPlan.durationDays = durationDays;
             studyPlan.sessions = sessions;
             studyPlan.totalStudyHours = totalStudyHours;
-            studyPlan.weakSubjects = weakSubjects;
+            studyPlan.weakSubjects = detectedWeakSubjects;
             studyPlan.startDate = new Date();
             studyPlan.status = "Active";
             studyPlan.generatedBy = "algorithm";
@@ -189,7 +256,7 @@ export const generateStudyPlan = async (
                 durationDays,
                 sessions,
                 totalStudyHours,
-                weakSubjects,
+                weakSubjects: detectedWeakSubjects,
                 startDate: new Date(),
                 status: "Active",
                 generatedBy: "algorithm",

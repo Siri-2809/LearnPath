@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import quizService from "../services/quizService";
+import companyService from "../services/companyService";
 import ProgressChart from "../components/ProgressChart";
+
+const getPerformanceLabel = (averageScore) => {
+    if (averageScore >= 85) return "Excellent";
+    if (averageScore >= 70) return "Good";
+    if (averageScore >= 50) return "Average";
+    return "Needs Improvement";
+};
 
 /**
  * ============================================
@@ -37,42 +45,78 @@ const Dashboard = () => {
                 }
 
                 // Fetch latest quiz result for the selected company
-                const response = await quizService.getLatestQuizResult(
-                    user.targetCompany
-                );
+                const [quizResponse, companyResponse] = await Promise.all([
+                    quizService.getLatestQuizResult(user.targetCompany),
+                    companyService.getCompanyByName(user.targetCompany),
+                ]);
 
-                if (response?.result) {
-                    const latestResult = response.result;
+                const companySubjects = Array.isArray(companyResponse?.company?.subjects)
+                    ? companyResponse.company.subjects
+                    : [];
+
+                if (quizResponse?.result) {
+                    const latestResult = quizResponse.result;
 
                     // Format data for chart
-                    const subjectScores =
+                    const rawSubjectScores =
                         latestResult.subjectWiseScores?.map((item) => ({
                             subject: item.subject,
                             score: item.score,
                             percentage: item.percentage,
                         })) || [];
 
+                    // Ensure all company subjects are represented in the chart.
+                    const subjectScoreMap = new Map(
+                        rawSubjectScores.map((item) => [item.subject, item])
+                    );
+
+                    const subjectScores = companySubjects.length
+                        ? companySubjects.map((subject) =>
+                              subjectScoreMap.get(subject) || {
+                                  subject,
+                                  score: 0,
+                                  percentage: 0,
+                              }
+                          )
+                        : rawSubjectScores;
+
                     setPerformanceData(subjectScores);
 
-                    // Calculate average score from subject-wise percentages
-                    if (subjectScores.length > 0) {
+                    // Calculate average score from attempted subjects only.
+                    if (rawSubjectScores.length > 0) {
                         const avgPercentage =
-                            subjectScores.reduce((sum, item) => sum + (item.percentage || 0), 0) /
-                            subjectScores.length;
+                            rawSubjectScores.reduce(
+                                (sum, item) => sum + (item.percentage || 0),
+                                0
+                            ) / rawSubjectScores.length;
                         setAverageScore(avgPercentage);
                     }
 
-                    // Prepare scores for ML service
-                    const scores = {};
-                    subjectScores.forEach((item) => {
-                        scores[item.subject] = item.percentage;
-                    });
+                    // Derive skill-gap directly from quiz result so all attempted
+                    // subjects are represented without alias collapsing.
+                    const weakSubjects = rawSubjectScores
+                        .filter((item) => (item.percentage || 0) < 50)
+                        .map((item) => item.subject);
 
-                    // Analyze skill gap using ML
-                    if (Object.keys(scores).length > 0) {
-                        const analysis = await quizService.analyzeSkillGap(scores);
-                        setSkillGap(analysis);
-                    }
+                    const strongSubjects = rawSubjectScores
+                        .filter((item) => (item.percentage || 0) >= 50)
+                        .map((item) => item.subject);
+
+                    const average = rawSubjectScores.length
+                        ? rawSubjectScores.reduce(
+                              (sum, item) => sum + (item.percentage || 0),
+                              0
+                          ) / rawSubjectScores.length
+                        : 0;
+
+                    setSkillGap({
+                        success: true,
+                        weak_subjects: weakSubjects,
+                        strong_subjects: strongSubjects,
+                        average_score: average,
+                        performance: getPerformanceLabel(average),
+                        source: "quiz-result",
+                    });
                 }
             } catch (error) {
                 console.error("Dashboard Error:", error);

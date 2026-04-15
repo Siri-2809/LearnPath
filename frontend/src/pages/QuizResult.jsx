@@ -4,6 +4,13 @@ import QuestionCard from "../components/QuestionCard";
 import ProgressChart from "../components/ProgressChart";
 import quizService from "../services/quizService";
 
+const getPerformanceLabel = (averageScore) => {
+    if (averageScore >= 85) return "Excellent";
+    if (averageScore >= 70) return "Good";
+    if (averageScore >= 50) return "Average";
+    return "Needs Improvement";
+};
+
 /**
  * ============================================
  * LearnPath - Quiz Result Page
@@ -65,15 +72,37 @@ const QuizResult = () => {
                 // Convert to ML-friendly format
                 const scores = {};
                 const chartData = subjectScores.map((item) => {
-                    scores[item.subject] = item.score;
+                    scores[item.subject] = item.percentage;
                     return {
                         subject: item.subject,
                         score: item.score,
+                        percentage: item.percentage,
                     };
                 });
 
-                // Skill Gap Analysis
-                const skillGapResponse = await quizService.analyzeSkillGap(scores);
+                // Skill Gap Analysis from actual quiz subjects.
+                const weakSubjects = chartData
+                    .filter((item) => (item.percentage || 0) < 50)
+                    .map((item) => item.subject);
+
+                const strongSubjects = chartData
+                    .filter((item) => (item.percentage || 0) >= 50)
+                    .map((item) => item.subject);
+
+                const averageScore = chartData.length
+                    ? chartData.reduce((sum, item) => sum + (item.percentage || 0), 0) /
+                      chartData.length
+                    : 0;
+
+                const skillGapResponse = {
+                    success: true,
+                    weak_subjects: weakSubjects,
+                    strong_subjects: strongSubjects,
+                    average_score: averageScore,
+                    performance: getPerformanceLabel(averageScore),
+                    source: "quiz-result",
+                };
+
                 setAnalysis(skillGapResponse);
 
                 // Resource Recommendations
@@ -81,7 +110,27 @@ const QuizResult = () => {
                     const recResponse = await quizService.getRecommendations(
                         skillGapResponse.weak_subjects
                     );
-                    setRecommendations(recResponse.recommendations || []);
+                    const normalizedRecommendations = (recResponse.recommendations || [])
+                        .map((rec) => {
+                            if (typeof rec === "string") {
+                                return {
+                                    label: rec,
+                                    subject: "General",
+                                    type: "Resource",
+                                    url: "",
+                                };
+                            }
+
+                            return {
+                                label: rec.resource || rec.title || rec.name || "Recommended Resource",
+                                subject: rec.subject || "General",
+                                type: rec.type || "Resource",
+                                url: rec.url || "",
+                            };
+                        })
+                        .filter((rec) => rec.label);
+
+                    setRecommendations(normalizedRecommendations);
                 }
 
                 setChartData(chartData);
@@ -101,14 +150,14 @@ const QuizResult = () => {
 
     // Extract result data safely
     const score = result.score ?? result.data?.score ?? 0;
-    const totalQuestions =
-        result.totalQuestions ??
-        result.data?.totalQuestions ??
+    const totalMarks =
+        result.totalMarks ??
+        result.data?.totalMarks ??
         questions.length;
 
     const percentage =
-        totalQuestions > 0
-            ? ((score / totalQuestions) * 100).toFixed(2)
+        totalMarks > 0
+            ? ((score / totalMarks) * 100).toFixed(2)
             : 0;
 
     const performance =
@@ -138,7 +187,7 @@ const QuizResult = () => {
                 <div className="card stat-card">
                     <h3>Score</h3>
                     <p>
-                        {score}/{totalQuestions}
+                        {score}/{totalMarks}
                     </p>
                 </div>
 
@@ -206,7 +255,15 @@ const QuizResult = () => {
                     <ul className="recommendation-list">
                         {recommendations.map((rec, index) => (
                             <li key={index}>
-                                <strong>{rec.title || rec.name}</strong>
+                                <strong>{rec.label}</strong>
+                                {(rec.subject || rec.type) && (
+                                    <>
+                                        {" "}
+                                        <span style={{ color: "#64748b" }}>
+                                            ({[rec.subject, rec.type].filter(Boolean).join(" • ")})
+                                        </span>
+                                    </>
+                                )}
                                 {rec.url && (
                                     <>
                                         {" - "}
