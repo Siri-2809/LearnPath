@@ -138,6 +138,30 @@ const StudyPlan = () => {
         );
     }
 
+    /**
+     * No Company Selected State
+     */
+    if (!company) {
+        return (
+            <div className="container study-plan-page fade-in">
+                <div className="page-header">
+                    <h1>Personalized Study Plan</h1>
+                    <p>Select a company to generate your customized study plan.</p>
+                </div>
+
+                <div className="card text-center" style={{ padding: "40px" }}>
+                    <h3 style={{ marginBottom: "15px" }}>📋 No Target Company Selected</h3>
+                    <p style={{ marginBottom: "20px", color: "#666" }}>
+                        Please select a company first to generate your personalized study plan.
+                    </p>
+                    <Link to="/companies" className="btn btn-primary">
+                        Select a Company
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="container study-plan-page fade-in">
             {/* Header */}
@@ -155,45 +179,32 @@ const StudyPlan = () => {
             )}
 
             {/* Duration Controls */}
-            {company && (
-                <div className="card duration-controls">
-                    <label htmlFor="durationDays">Choose plan duration (days):</label>
-                    <div className="duration-actions">
-                        <input
-                            id="durationDays"
-                            type="number"
-                            min="1"
-                            max="180"
-                            className="form-control"
-                            value={durationDays}
-                            onChange={(e) => setDurationDays(Number(e.target.value) || 1)}
-                        />
-                        <button
-                            className="btn btn-primary"
-                            onClick={handleRegenerateStudyPlan}
-                            disabled={generating || loading}
-                        >
-                            {generating ? "Generating..." : "Generate for Selected Days"}
-                        </button>
-                    </div>
-                    {studyPlan?.durationDays && (
-                        <p className="text-muted" style={{ marginTop: "8px" }}>
-                            Current plan duration: <strong>{studyPlan.durationDays}</strong> days
-                        </p>
-                    )}
+            <div className="card duration-controls">
+                <label htmlFor="durationDays">Choose plan duration (days):</label>
+                <div className="duration-actions">
+                    <input
+                        id="durationDays"
+                        type="number"
+                        min="1"
+                        max="180"
+                        className="form-control"
+                        value={durationDays}
+                        onChange={(e) => setDurationDays(Number(e.target.value) || 1)}
+                    />
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleRegenerateStudyPlan}
+                        disabled={generating || loading}
+                    >
+                        {generating ? "Generating..." : "Generate for Selected Days"}
+                    </button>
                 </div>
-            )}
-
-            {/* No Company Selected */}
-            {!company && (
-                <div className="card text-center">
-                    <h3>No Target Company Selected</h3>
-                    <p>Please select a company to generate your study plan.</p>
-                    <Link to="/companies" className="btn btn-primary">
-                        Select Company
-                    </Link>
-                </div>
-            )}
+                {studyPlan?.durationDays && (
+                    <p className="text-muted" style={{ marginTop: "8px" }}>
+                        Current plan duration: <strong>{studyPlan.durationDays}</strong> days
+                    </p>
+                )}
+            </div>
 
             {/* Display Study Plan */}
             {studyPlan && (

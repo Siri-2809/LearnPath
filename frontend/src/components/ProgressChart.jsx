@@ -48,13 +48,19 @@ const ProgressChart = ({ data = [] }) => {
             </div>
 
             {/* Chart */}
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={450}>
                 <BarChart
                     data={data}
-                    margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
+                    margin={{ top: 20, right: 20, left: 0, bottom: 80 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="subject" />
+                    <XAxis 
+                        dataKey="subject" 
+                        interval={0}
+                        tick={{ fontSize: 12 }}
+                        wrappedLabel={{ offset: 10 }}
+                        height={80}
+                    />
                     <YAxis domain={[0, 100]} />
                     <Tooltip 
                         formatter={(value) =>

@@ -33,41 +33,30 @@ const LearningPath = () => {
      */
     const fetchOrGenerateLearningPath = async () => {
         if (!company) {
-            console.warn("⚠️ No company selected");
-            setError("No target company selected. Redirecting to company selection...");
             setLoading(false);
-            setTimeout(() => navigate("/companies"), 1000);
             return;
         }
 
         try {
             setLoading(true);
             setError("");
-            console.log("🔍 Fetching/generating learning path for:", company);
             
             // Try to fetch existing learning path
             try {
                 const response = await learningPathService.getLearningPathByCompany(company);
-                // Service returns: { success, learningPath: {...} }
                 if (response?.learningPath) {
-                    console.log("✅ Found existing learning path");
                     setLearningPath(response.learningPath);
                     setLoading(false);
                     return;
                 }
             } catch (fetchErr) {
                 // No existing path, continue to generate
-                console.log("📝 No existing learning path. Generating new one...");
             }
 
             // Generate new learning path
-            console.log("🚀 Generating learning path...");
             const generateResponse = await learningPathService.generateLearningPath(company);
-            // Service returns: { success, message, learningPath: {...} }
-            console.log("📥 Generation response:", generateResponse);
             
             if (generateResponse?.learningPath) {
-                console.log("✅ Learning path generated successfully");
                 setLearningPath(generateResponse.learningPath);
             } else {
                 throw new Error("Invalid response from learning path generation");
@@ -97,6 +86,30 @@ const LearningPath = () => {
         );
     }
 
+    /**
+     * No Company Selected State
+     */
+    if (!company) {
+        return (
+            <div className="container learning-path-page fade-in">
+                <div className="page-header">
+                    <h1>Personalized Learning Path</h1>
+                    <p>Select a company to generate your customized learning roadmap.</p>
+                </div>
+
+                <div className="card text-center" style={{ padding: "40px" }}>
+                    <h3 style={{ marginBottom: "15px" }}>📋 No Target Company Selected</h3>
+                    <p style={{ marginBottom: "20px", color: "#666" }}>
+                        Please select a company first to generate your personalized learning path.
+                    </p>
+                    <a href="/companies" className="btn btn-primary">
+                        Select a Company
+                    </a>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="container learning-path-page fade-in">
             {/* Header */}
@@ -104,7 +117,7 @@ const LearningPath = () => {
                 <h1>Personalized Learning Path</h1>
                 <p>
                     Follow a structured roadmap tailored to crack{" "}
-                    <strong>{company || "your dream company"}</strong>.
+                    <strong>{company}</strong>.
                 </p>
             </div>
 
@@ -113,19 +126,8 @@ const LearningPath = () => {
                 <div className="alert alert-danger text-center">{error}</div>
             )}
 
-            {/* No Company Selected */}
-            {!company && (
-                <div className="card text-center">
-                    <h3>📋 No Target Company Selected</h3>
-                    <p>Please complete the diagnostic quiz and select a company to generate your learning path.</p>
-                    <a href="/companies" className="btn btn-primary">
-                        Select Company
-                    </a>
-                </div>
-            )}
-
             {/* Display Learning Path */}
-            {company && learningPath && (
+            {learningPath && (
                 <LearningPathTimeline learningPath={learningPath} />
             )}
 

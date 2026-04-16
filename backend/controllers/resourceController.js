@@ -37,13 +37,35 @@ export const getAllResources = async (req, res) => {
 
         // Search by title or description
         if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: "i" } },
-                { description: { $regex: search, $options: "i" } }
-            ];
+            // Use $and to properly combine search with other filters
+            const searchOrQuery = {
+                $or: [
+                    { title: { $regex: search, $options: "i" } },
+                    { description: { $regex: search, $options: "i" } }
+                ]
+            };
+            
+            // If company filter exists, combine both $or conditions properly
+            if (company) {
+                query.$and = [
+                    {
+                        $or: [
+                            { companies: { $in: [company] } },
+                            { companies: { $exists: false } },
+                            { companies: { $size: 0 } }
+                        ]
+                    },
+                    searchOrQuery
+                ];
+                delete query.$or;
+            } else {
+                query.$or = searchOrQuery.$or;
+            }
         }
 
-        const resources = await Resource.find(query).sort({ rating: -1 });
+        const resources = await Resource.find(query)
+            .sort({ rating: -1 })
+            .lean();
 
         res.status(200).json({
             success: true,

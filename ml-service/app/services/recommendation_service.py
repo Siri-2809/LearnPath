@@ -16,46 +16,34 @@ from app.models.predict import recommend_resources
 # Rule-based fallback recommendations
 RESOURCE_MAP = {
     "DSA": [
-        "GeeksforGeeks - Data Structures and Algorithms",
-        "LeetCode Practice Problems",
-        "Cracking the Coding Interview",
-        "Coursera - Algorithms Specialization"
+        "Data Structures and Algorithms Course",
+        "Striver's A2Z DSA Course",
+        "Introduction to Algorithms"
     ],
     "DBMS": [
-        "GeeksforGeeks - DBMS Tutorials",
-        "NPTEL - Database Management Systems",
-        "MySQL Documentation",
-        "Stanford Database Courses"
+        "Database Management Systems Tutorial",
+        "SQL for Beginners"
     ],
     "OS": [
-        "Operating System Concepts by Silberschatz",
-        "GeeksforGeeks - Operating Systems",
-        "NPTEL - Operating Systems",
-        "Linux Command Line Tutorials"
+        "Operating Systems Tutorial"
     ],
     "CN": [
-        "Computer Networking by Kurose and Ross",
-        "GeeksforGeeks - Computer Networks",
-        "Cisco Networking Basics",
-        "NPTEL - Computer Networks"
+        "Computer Networks Tutorial"
     ],
     "OOP": [
-        "Head First Object-Oriented Analysis and Design",
-        "GeeksforGeeks - Object-Oriented Programming",
-        "Java Programming Masterclass",
-        "C++ OOP Tutorials"
+        "Object-Oriented Programming in Java"
     ],
     "Aptitude": [
-        "IndiaBix Aptitude Questions",
-        "RS Aggarwal Quantitative Aptitude",
-        "PrepInsta Aptitude Preparation",
-        "GeeksforGeeks Aptitude Practice"
+        "Quantitative Aptitude by RS Aggarwal",
+        "Logical Reasoning Tutorial"
     ],
     "System Design": [
         "Grokking the System Design Interview",
-        "System Design Primer (GitHub)",
-        "Designing Data-Intensive Applications",
-        "High Scalability Blog"
+        "System Design Primer"
+    ],
+    "Programming Fundamentals": [
+        "C Programming Tutorial",
+        "Introduction to Java Programming"
     ]
 }
 

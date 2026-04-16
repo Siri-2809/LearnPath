@@ -12,11 +12,16 @@ import api from "./api";
 
 /**
  * Fetch all learning resources
+ * @param {string} company - Optional company name to filter resources
  * @returns {Promise<Object>}
  */
-export const getAllResources = async () => {
+export const getAllResources = async (company) => {
     try {
-        const response = await api.get("/resources");
+        const params = {};
+        if (company) {
+            params.company = company;
+        }
+        const response = await api.get("/resources", { params });
         return response.data;
     } catch (error) {
         console.error(

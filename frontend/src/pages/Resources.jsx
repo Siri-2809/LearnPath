@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import resourceService from "../services/resourceService";
+import companyService from "../services/companyService";
 import useAuth from "../hooks/useAuth";
 import ResourceCard from "../components/ResourceCard";
 /**
@@ -7,7 +8,7 @@ import ResourceCard from "../components/ResourceCard";
  * LearnPath - Resources Page
  * ============================================
  * Features:
- * - Fetches curated learning resources
+ * - Fetches curated learning resources for company's required subjects
  * - Filters resources by subject
  * - Displays categorized study materials
  * - Responsive and modern UI
@@ -32,12 +33,37 @@ const Resources = () => {
                 setLoading(true);
                 console.log("📥 Fetching resources...");
                 
-                const response = await resourceService.getAllResources();
+                // Fetch company info to get required subjects
+                let companySubjects = [];
+                if (user?.targetCompany) {
+                    try {
+                        const companyResponse = await companyService.getCompanyByName(user.targetCompany);
+                        companySubjects = Array.isArray(companyResponse?.company?.subjects)
+                            ? companyResponse.company.subjects
+                            : [];
+                        console.log(`✓ Company ${user.targetCompany} subjects:`, companySubjects);
+                    } catch (err) {
+                        console.warn("⚠️ Could not fetch company subjects:", err);
+                    }
+                }
+
+                // Fetch resources for company's subjects
+                const response = await resourceService.getAllResources(user?.targetCompany);
                 console.log("✓ Resources response received:", response);
 
                 // Extract resources from response
                 // Backend returns: { success: true, count, resources: [...] }
-                const resourcesArray = response.resources || response.data?.resources || response || [];
+                let resourcesArray = [];
+                
+                if (Array.isArray(response)) {
+                    // If response is already an array
+                    resourcesArray = response;
+                } else if (response && typeof response === 'object') {
+                    // If response is an object, try to extract resources
+                    resourcesArray = response.resources || response.data?.resources || [];
+                }
+
+                console.log("✓ Extracted resources type:", typeof resourcesArray, "Length:", resourcesArray.length);
 
                 if (!Array.isArray(resourcesArray)) {
                     console.error("❌ Resources is not an array:", typeof resourcesArray, resourcesArray);
@@ -46,16 +72,33 @@ const Resources = () => {
                     return;
                 }
 
+                if (resourcesArray.length === 0) {
+                    console.warn("⚠️ No resources found in the database");
+                }
+
                 console.log(`✓ Found ${resourcesArray.length} resources`);
                 setResources(resourcesArray);
                 setFilteredResources(resourcesArray);
 
-                // Extract unique subjects
-                const uniqueSubjects = [
-                    "All",
-                    ...new Set(resourcesArray.map((resource) => resource.subject)),
-                ];
-                console.log("✓ Unique subjects:", uniqueSubjects);
+                // Extract unique subjects from resources
+                const allResourceSubjects = new Set(resourcesArray.map((resource) => resource.subject).filter(Boolean));
+                
+                // If company subjects are available, filter to only show those subjects
+                let uniqueSubjects = ["All"];
+                if (companySubjects.length > 0) {
+                    // Only show subjects that are in the company AND have resources
+                    const companySubjectsWithResources = companySubjects.filter(
+                        (subject) => allResourceSubjects.has(subject)
+                    );
+                    uniqueSubjects = ["All", ...companySubjectsWithResources];
+                    console.log("✓ Filtered to company subjects with resources:", companySubjectsWithResources);
+                } else {
+                    // If no company info, show all subjects from resources
+                    uniqueSubjects = [...uniqueSubjects, ...Array.from(allResourceSubjects)];
+                    console.log("✓ Showing all resource subjects:", uniqueSubjects);
+                }
+                
+                console.log("✓ Final subjects list:", uniqueSubjects);
                 setSubjects(uniqueSubjects);
             } catch (err) {
                 console.error("❌ Error fetching resources:", err);
@@ -103,6 +146,17 @@ const Resources = () => {
                     recommendations.
                 </p>
             </div>
+
+            {/* Company Selection Reminder */}
+            {!user?.targetCompany && (
+                <div className="alert alert-info text-center" style={{ marginBottom: "20px" }}>
+                    📌 <strong>No company selected</strong>. 
+                    <a href="/companies" style={{ marginLeft: "10px", textDecoration: "underline" }}>
+                        Select a company
+                    </a>
+                    {" "}to see resources for your target company.
+                </div>
+            )}
 
             {/* Error Message */}
             {error && (

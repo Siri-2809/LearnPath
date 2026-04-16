@@ -116,6 +116,31 @@ export const AuthProvider = ({ children }) => {
     };
 
     /**
+     * Update user (used for company selection, etc)
+     * @param {Object} updatedUser
+     */
+    const updateUser = (updatedUser) => {
+        setUserState(updatedUser);
+        setUser(updatedUser);
+    };
+
+    /**
+     * Refresh user profile from backend
+     */
+    const refreshUser = async () => {
+        try {
+            const profile = await authService.getProfile();
+            const normalizedUser = profile?.user || profile;
+            setUserState(normalizedUser);
+            setUser(normalizedUser);
+            return normalizedUser;
+        } catch (err) {
+            console.error("Failed to refresh user profile:", err);
+            return null;
+        }
+    };
+
+    /**
      * Update user profile
      * @param {Object} updatedData
      */
@@ -158,6 +183,8 @@ export const AuthProvider = ({ children }) => {
                 login,
                 logout,
                 updateProfile,
+                updateUser,
+                refreshUser,
             }}
         >
             {children}

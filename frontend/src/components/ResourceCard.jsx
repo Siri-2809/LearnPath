@@ -32,7 +32,10 @@ const ResourceCard = ({ resource }) => {
      * Returns an emoji icon based on resource type
      */
     const getResourceIcon = () => {
-        switch (type.toLowerCase()) {
+        if (!type) return "🔗";
+        const lowerType = type.toLowerCase().trim();
+        
+        switch (lowerType) {
             case "video":
                 return "🎥";
             case "article":
@@ -46,6 +49,7 @@ const ResourceCard = ({ resource }) => {
             case "practice":
                 return "💻";
             default:
+                console.warn(`Unknown resource type: ${type}`);
                 return "🔗";
         }
     };
@@ -54,15 +58,15 @@ const ResourceCard = ({ resource }) => {
         <div className="card resource-card fade-in">
             <div className="resource-header">
                 <span className="resource-icon">{getResourceIcon()}</span>
-                <h3 className="resource-title">{title}</h3>
+                <h3 className="resource-title">{title || "Untitled Resource"}</h3>
             </div>
 
-            <span className="resource-subject">{subject}</span>
+            <span className="resource-subject">{subject || "General"}</span>
 
             <p className="resource-description">
-                {description?.length > 120
+                {description && description.length > 120
                     ? `${description.substring(0, 120)}...`
-                    : description}
+                    : description || "No description available"}
             </p>
 
             <a

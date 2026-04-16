@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCompanyLogo } from "../utils/helpers";
 import userService from "../services/userService";
-import { getUser, setUser } from "../utils/helpers";
+import useAuth from "../hooks/useAuth";
 
 /**
  * ============================================
@@ -21,6 +21,7 @@ import { getUser, setUser } from "../utils/helpers";
 
 const CompanyCard = ({ company }) => {
     const navigate = useNavigate();
+    const { updateUser, refreshUser } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -32,17 +33,11 @@ const CompanyCard = ({ company }) => {
             setLoading(true);
             setError("");
 
-            // Save target company to user profile
+            // Save target company to user profile on backend
             await userService.updateTargetCompany(company.name);
 
-            // Keep frontend auth cache in sync so dashboard persists company context.
-            const cachedUser = getUser();
-            if (cachedUser) {
-              setUser({
-                ...cachedUser,
-                targetCompany: company.name,
-              });
-            }
+            // Refresh user context to get updated targetCompany
+            await refreshUser();
 
             // Navigate to quiz page
             navigate(`/quiz/${company.name}`);
