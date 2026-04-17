@@ -92,7 +92,7 @@ const Register = () => {
     return (
         <div className="auth-page">
             <div className="auth-container card fade-in">
-                <h2 className="auth-title">Create an Account 🚀</h2>
+                <h2 className="auth-title">Create an Account </h2>
                 <p className="auth-subtitle">
                     Start your placement preparation journey with LearnPath.
                 </p>

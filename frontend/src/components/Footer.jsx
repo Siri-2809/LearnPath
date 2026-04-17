@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import studyPlanService from "../services/studyPlanService";
 
 /**
  * ============================================
@@ -11,10 +13,42 @@ import { Link } from "react-router-dom";
  * - Social media placeholders
  * - Dynamic copyright year
  * - Matches LearnPath theme
+ * - Mock Tests only enabled after study plan completion
  */
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+    const { user } = useAuth();
+    const targetCompany = user?.targetCompany || "Infosys";
+    
+    const [isStudyPlanCompleted, setIsStudyPlanCompleted] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    // Check if study plan is completed
+    useEffect(() => {
+        const checkStudyPlanStatus = async () => {
+            if (!targetCompany) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await studyPlanService.getStudyPlanByCompany(targetCompany);
+                if (response?.studyPlan?.status === "Completed") {
+                    setIsStudyPlanCompleted(true);
+                } else {
+                    setIsStudyPlanCompleted(false);
+                }
+            } catch (error) {
+                console.error("Error fetching study plan status:", error);
+                setIsStudyPlanCompleted(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkStudyPlanStatus();
+    }, [targetCompany]);
 
     return (
         <footer className="footer">
@@ -59,7 +93,13 @@ const Footer = () => {
                             <Link to="/study-plan">Study Plan</Link>
                         </li>
                         <li>
-                            <Link to="/quiz/Google">Mock Tests</Link>
+                            {isStudyPlanCompleted ? (
+                                <Link to={`/quiz/${targetCompany}?testType=mock`}>Mock Tests</Link>
+                            ) : (
+                                <span className="mock-tests-disabled" title="Complete the study plan to unlock mock tests">
+                                    Mock Tests (Complete Study Plan)
+                                </span>
+                            )}
                         </li>
                     </ul>
                 </div>
@@ -90,7 +130,7 @@ const Footer = () => {
                     © {currentYear} <strong>LearnPath</strong>. All Rights Reserved.
                 </p>
                 <p className="footer-tagline">
-                    Built with ❤️ using MERN & FastAPI
+                    Built using MERN & FastAPI
                 </p>
             </div>
 
@@ -148,6 +188,13 @@ const Footer = () => {
 
         .footer-links a:hover {
           color: #38bdf8;
+        }
+
+        .mock-tests-disabled {
+          color: #64748b;
+          cursor: not-allowed;
+          font-style: italic;
+          opacity: 0.6;
         }
 
         .footer-socials {
