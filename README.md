@@ -1,6 +1,30 @@
 # 🚀 LearnPath
 
-**LearnPath** is a company-specific placement preparation platform designed to help students prepare effectively for top tech companies. It leverages Artificial Intelligence, Machine Learning, and recommendation systems to generate personalized learning paths, adaptive quizzes, and structured study plans tailored to individual skill levels and industry requirements.
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18+-blue)](https://react.dev/)
+[![Python](https://img.shields.io/badge/Python-3.9+-yellow)](https://www.python.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6+-brightgreen)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/License-MIT-orange)](LICENSE)
+
+**LearnPath** is an AI-powered placement preparation platform that generates personalized learning paths, adaptive quizzes, and intelligent study plans for top tech companies. Using advanced ML algorithms and recommendation systems, LearnPath helps students identify skill gaps and achieve optimal interview readiness.
+
+---
+
+## 📚 Table of Contents
+
+- [Project Overview](#-project-overview)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [System Architecture](#-system-architecture)
+- [Installation](#-installation-and-setup)
+- [Configuration](#-environment-variables)
+- [API Endpoints](#-api-endpoints)
+- [Usage Workflow](#-sample-workflow)
+- [Project Structure](#-project-structure)
+- [Documentation](#-documentation)
+- [Future Enhancements](#-future-enhancements)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
@@ -44,11 +68,13 @@ The platform evaluates a student's knowledge, identifies skill gaps, and generat
 
 * Decision Trees and Random Forests for skill-gap analysis.
 * Cosine similarity for study material recommendations.
+* Recommendation engine for personalized content delivery.
 
 ### 📊 Progress Tracking Dashboard
 
 * Monitor learning progress and quiz performance.
-* Visualize improvements through analytics and charts.
+* Visualize improvements through interactive analytics and charts.
+* Real-time skill gap assessment and tracking.
 
 ---
 
@@ -116,24 +142,32 @@ Python ML Microservice (FastAPI/Flask)
 ## 📁 Project Structure
 
 ```
-LearnPath-AI/
+LearnPath-1/
 │
-├── backend/        # Node.js & Express API
-├── frontend/       # React Application
-├── ml-service/     # Python ML Microservice
-├── docs/           # Project Documentation
-└── README.md
-```
+├── backend/                      # Node.js & Express API
+│   ├── routes/                   # API route handlers
+│   ├── controllers/              # Business logic controllers
+│   ├── models/                   # MongoDB Mongoose models
+│   ├── services/                 # Business services & ML integration
+│   ├── middleware/               # Authentication & error handling
+│   ├── algorithms/               # Core algorithms (topological sort, scheduling)
+│   ├── data/                     # Mock data (companies, questions, resources)
+│   ├── config/                   # Database configuration
+│   └── server.js                 # Express server entry point
+│
+├── Prerequisites
 
----
-
-## ⚙️ Installation and Setup
+- **Node.js** (v18 or higher)
+- **Python** (v3.9 or higher)
+- **MongoDB** (local or Atlas cloud)
+- **Git**
+- **npm** or **yarn** package manager
 
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/LearnPath-AI.git
-cd LearnPath-AI
+git clone https://github.com/Siri-2809/LearnPath.git
+cd LearnPath-1
 ```
 
 ---
@@ -142,7 +176,64 @@ cd LearnPath-AI
 
 ```bash
 cd backend
+
+# Install dependencies
 npm install
+
+# Seed initial data
+npm run seed
+
+# Start development server
+npm start
+# or for development with hot-reload
+npm run dev
+```
+
+**Backend runs on:** `http://localhost:5000`
+
+---
+
+### 3️⃣ Frontend Setup
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start React development server
+npm start
+```
+
+**Frontend runs on:** `http://localhost:3000`
+
+---
+
+### 4️⃣ ML Service Setup
+
+```bash
+cd ml-service
+
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start FastAPI server
+uvicorn main:app --reload
+# or with specific host/port
+uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+**ML Service runs on:** `http://localhost:8000
+### 2️⃣ Backend Setup
+
+```bash
+cd backend
+npm install
+npm run seed
 npm run dev
 ```
 
@@ -162,23 +253,63 @@ npm start
 
 ```bash
 cd ml-service
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
 
----
-
-## 🔐 Environment Variables
-
-Create `.env` files in each module using the provided examples.
+### Core Endpoints   | Description                         | Auth |
+| ------ | -------------------------------- | ----------------------------------- | ---- |
+| GET    | `/api/companies`                 | Fetch all companies                | ❌   |
+| GET    | `/api/resources`                 | Fetch study materials              | ❌   |
+| GET    | `/api/resources?company=:id`     | Fetch resources for company        | ❌   |
+| POST   | `/api/auth/register`             | Register a new user                | ❌   |
+| POST   | `/api/auth/login`                | User login                         | ❌   |
+| GET    | `/api/users/profile`             | Get user profile                   | ✅   |
+| GET    | `/api/quiz/:company`             | Get company-specific quiz          | ✅   |
+| POST   | `/api/quiz/submit`               | Submit quiz results                | ✅   |
+| GET    | `/api/learning-path/:company`    | Generate personalized learning path| ✅   |
+| POST   | `/api/study-plan`                | Generate study plan                | ✅   |
+| GET    | `/api/study-plan/:id`            | Get user study plan                | ✅
 
 ### Backend (`backend/.env`)
-
 ```
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/learnpath
-JWT_SECRET=your_jwt_secret
-ML_SERVICE_URL=http://127.0.0.1:8000
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Registration & Authentication                           │
+│    User creates account and logs in with JWT token         │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 2. Company Selection                                         │
+│    Choose target company (Google, Microsoft, TCS, etc.)    │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 3. Diagnostic Quiz Assessment                              │
+│    ML model evaluates skill levels across CS subjects      │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 4. Skill Gap Analysis                                       │
+│    Decision Trees identify strengths & weaknesses          │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 5. Personalized Learning Path                              │
+│    Topological sort creates prerequisite-based roadmap     │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 6. Intelligent Study Plan                                  │
+│    Scheduling algorithm generates day-wise timetable       │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 7. Resource Recommendations                                │
+│    Cosine similarity finds best study materials            │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│ 8. Progress Tracking                                       │
+│    Dashboard displays analytics & performance metrics      │
+└─────────────────────────────────────────────────────────────┘
+```
 CLIENT_URL=http://localhost:3000
 ```
 
@@ -194,35 +325,107 @@ REACT_APP_API_URL=http://localhost:5000/api
 HOST=127.0.0.1
 PORT=8000
 ```
+🔧 Troubleshooting
+
+### Common Issues
+
+**MongoDB Connection Error**
+```
+Solution: Ensure MongoDB is running locally or update MONGO_URI in .env
+Command: mongod  # Start MongoDB locally
+```
+
+**Port Already in Use**
+```
+Backend: Change PORT in backend/.env
+Frontend: PORT=3001 npm start
+ML Service: uvicorn main:app --port 8001 --reload
+```
+
+**Module Not Found Errors**
+```bash
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# For Python
+pip install --upgrade -r requirements.txt
+```
+
+**ML Service Connection Issue**
+```
+Ensure ML_SERVICE_URL in backend/.env points to running ML service
+Check CORS settings if frontend can't reach backend/ML service
+```
 
 ---
 
-## 📡 API Endpoints
+## 🌟 Future Enhancements
 
-| Method | Endpoint                      | Description                      |
-| ------ | ----------------------------- | -------------------------------- |
-| GET    | `/api/companies`              | Fetch all companies              |
-| GET    | `/api/quiz/:company`          | Generate company-specific quiz   |
-| POST   | `/api/quiz/submit`            | Submit quiz results              |
-| GET    | `/api/learning-path/:company` | Generate learning path           |
-| POST   | `/api/study-plan`             | Generate personalized study plan |
-| GET    | `/api/resources`              | Fetch study materials            |
-| POST   | `/api/auth/register`          | Register a user                  |
-| POST   | `/api/auth/login`             | User login                       |
+- 🔤 Resume Analyzer using NLP for skill extraction
+- 🤖 AI Interview Chatbot for mock interviews
+- 🔗 Integration with LeetCode and HackerRank APIs
+- 🏆 Gamification with leaderboards and badges
+- 🐳 Docker & Kubernetes deployment setup
+- 📈 Real-time performance prediction model
+- 📱 Mobile app (React Native)
+- 💬 WebSocket integration for real-time notifications
 
 ---
 
-## 📊 Sample Workflow
+## 📖 Contributing
 
-1. User registers and logs in.
-2. Selects a target company.
-3. Takes a diagnostic quiz.
-4. Receives a personalized learning path.
-5. Gets a daily study plan with recommended resources.
-6. Tracks progress via the dashboard.
+We welcome contributions! Please follow these steps:
+
+1. **Fork the repository** on GitHub
+2. **Create a feature branch**: `git checkout -b feature/your-feature-name`
+3. **Make your changes** and commit: `git commit -m "Add feature X"`
+4. **Push to your fork**: `git push origin feature/your-feature-name`
+5. **Open a Pull Request** with a clear description
+6. **Follow the code style** and add tests if applicable
+
+### Code Style Guidelines
+
+- **Backend**: Use ES6+ standards, follow Express best practices
+- **Frontend**: Use functional components, React hooks, and follow Airbnb style guide
+- **Python**: Follow PEP 8 conventions
 
 ---
 
+## 📜 License
+
+This project is developed for **academic and educational purposes**. You are free to use and modify it with proper attribution.
+
+Licensed under the **MIT License** - see LICENSE file for details.
+
+---
+
+## 🤝 Support & Contact
+
+For questions or issues:
+- Open an issue on [GitHub Issues](https://github.com/Siri-2809/LearnPath/issues)
+- Check existing [documentation](docs/api-documentation.md)
+- Review [project report](docs/) for detailed information
+
+---
+
+## ⭐ Acknowledgements
+
+Special thanks to these amazing resources:
+
+* [GeeksforGeeks](https://www.geeksforgeeks.org/) - Algorithm concepts
+* [LeetCode](https://www.leetcode.com/) - DSA problems
+* [NPTEL](https://nptel.ac.in/) - Educational content
+* [Scikit-learn Documentation](https://scikit-learn.org/)
+* [MongoDB Documentation](https://docs.mongodb.com/)
+* [React Documentation](https://react.dev/)
+* [Express.js Guide](https://expressjs.com/)
+
+---
+
+### 🚀 Empowering Students for Smarter Placements with LearnPath
+
+**Made with ❤️ for campus placements**
 ## 📸 Documentation
 
 All project-related diagrams and reports are available in the **docs/** directory:
